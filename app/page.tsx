@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 import Image from "next/image";
 
 const headerNavItems = [
@@ -17,6 +18,7 @@ export default function Home() {
   const sidebarRef = useRef<HTMLDivElement>(null);
   const isResizingRef = useRef(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   useEffect(() => {
     const onResize = () => setIsDesktop(window.innerWidth >= 640);
@@ -57,6 +59,17 @@ export default function Home() {
     };
   }, [isDesktop]);
 
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsProfileModalOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
   return (
     <main className="flex min-h-screen flex-col bg-[var(--color-bg)] text-[var(--color-text)]">
       <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between gap-4 border-b border-[var(--color-border)] bg-[linear-gradient(135deg,var(--color-surface),var(--color-surface-alt))] px-4 py-3 shadow-[0_12px_30px_rgba(15,23,42,0.08)] backdrop-blur-sm">
@@ -83,45 +96,101 @@ export default function Home() {
           <span className="hidden sm:inline text-lg font-semibold tracking-tight text-[var(--color-primary)] sm:text-2xl">Grab &amp; Go</span>
         </div>
 
-        <nav className="hidden sm:flex items-center gap-3">
-          <button
-            type="button"
-            className="inline-flex items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-2 text-[var(--color-support)] transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white"
-            aria-label="Shopping cart"
-          >
-            <Image src="/shopping-cart_Icon.png" alt="" width={18} height={18} className="h-[18px] w-[18px] object-contain" aria-hidden />
-          </button>
-
-          {headerNavItems.map((item) => (
-            <button
-              key={item.label}
-              type="button"
-              className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1 text-sm font-medium text-[var(--color-text)] transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white"
+        <div className="ml-auto flex items-center gap-3">
+          <nav className="hidden sm:flex items-center gap-3">
+            <Link
+              href="/cart"
+              className="relative inline-flex items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-2 text-[var(--color-support)] transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white"
+              aria-label="Shopping cart"
             >
-              <Image src={item.src} alt={item.alt} width={18} height={18} className="h-[18px] w-[18px] object-contain" />
-              {item.label}
-            </button>
-          ))}
+              <Image src="/shopping-cart_Icon.png" alt="" width={18} height={18} className="h-[18px] w-[18px] object-contain" aria-hidden />
+              <span className="absolute -right-1 -top-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--color-primary)] px-1 text-[10px] font-semibold leading-none text-white">
+                5
+              </span>
+            </Link>
+
+            {headerNavItems.map((item) => (
+              <button
+                key={item.label}
+                type="button"
+                className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1 text-sm font-medium text-[var(--color-text)] transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white"
+              >
+                <Image src={item.src} alt={item.alt} width={18} height={18} className="h-[18px] w-[18px] object-contain" />
+                {item.label}
+              </button>
+            ))}
+          </nav>
+
+          <button className="sm:hidden inline-flex items-center justify-center rounded-md p-2 transition-colors hover:bg-[rgba(225,29,72,0.12)]" onClick={() => setIsNavOpen(true)} aria-label="Open nav menu">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+              <path d="M4 6h12M4 10h12M4 14h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
 
           <button
             type="button"
-            className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1 text-sm font-medium text-[var(--color-text)] transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white"
+            aria-label="Profile"
+            className="inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-[var(--color-border)] shadow-[0_8px_18px_rgba(225,29,72,0.25)]"
+            onClick={() => setIsProfileModalOpen(true)}
           >
-            <span className="inline-flex h-4 w-4 items-center justify-center text-[var(--color-support)]">
-              <svg width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                <path d="M10 4v12M4 10h12" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
-              </svg>
-            </span>
-            Add
+            <Image
+              src="/Avatar_profile_image.png"
+              alt="Masoom Tariq profile"
+              width={40}
+              height={40}
+              className="h-full w-full object-cover"
+            />
           </button>
-        </nav>
-
-        <button className="sm:hidden inline-flex items-center justify-center rounded-md p-2 transition-colors hover:bg-[rgba(225,29,72,0.12)]" onClick={() => setIsNavOpen(true)} aria-label="Open nav menu">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-            <path d="M4 6h12M4 10h12M4 14h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
+        </div>
       </header>
+
+      {isProfileModalOpen && (
+        <div className="fixed inset-0 z-[60] flex items-start justify-center px-4 pt-24 sm:pt-28" role="dialog" aria-modal="true" aria-label="User profile">
+          <div className="absolute inset-0 bg-[rgba(15,23,42,0.55)]" onClick={() => setIsProfileModalOpen(false)} />
+          <div className="relative w-full max-w-sm rounded-[1.25rem] border border-[var(--color-border)] bg-[linear-gradient(180deg,var(--color-surface),#fff6eb)] p-5 shadow-[0_24px_56px_rgba(15,23,42,0.18)]">
+            <div className="flex items-start justify-between">
+              <h3 className="text-lg font-semibold text-[var(--color-text)]">Profile</h3>
+              <button
+                type="button"
+                onClick={() => setIsProfileModalOpen(false)}
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-text)] hover:bg-[rgba(249,115,22,0.08)]"
+                aria-label="Close profile"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="mt-4 flex items-center gap-3">
+              <Image
+                src="/Avatar_profile_image.png"
+                alt="Masoom Tariq"
+                width={48}
+                height={48}
+                className="h-12 w-12 rounded-full object-cover"
+              />
+              <div>
+                <p className="text-sm font-semibold text-[var(--color-text)]">Name : Masoom Tariq</p>
+                <p className="text-xs text-[var(--color-muted)]">Premium Member</p>
+              </div>
+            </div>
+
+            <div className="mt-5 space-y-3 text-sm">
+              <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2">
+                <p className="text-xs uppercase tracking-[0.12em] text-[var(--color-muted)]">Email</p>
+                <p className="mt-1 font-medium text-[var(--color-text)]">mohamed.khaled@example.com</p>
+              </div>
+              <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2">
+                <p className="text-xs uppercase tracking-[0.12em] text-[var(--color-muted)]">Phone</p>
+                <p className="mt-1 font-medium text-[var(--color-text)]">+20 100 123 4567</p>
+              </div>
+              <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2">
+                <p className="text-xs uppercase tracking-[0.12em] text-[var(--color-muted)]">Address</p>
+                <p className="mt-1 font-medium text-[var(--color-text)]">Downtown, Cairo, Egypt</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Mobile sidebar drawer */}
       {!isDesktop && isSidebarOpen && (
@@ -133,19 +202,21 @@ export default function Home() {
               <button onClick={() => setIsSidebarOpen(false)} aria-label="Close" className="p-1">✕</button>
             </div>
             <nav className="mt-4 flex flex-col gap-3">
-              {['Pizza', 'Burger', 'Pasta', 'Deals', 'Cart'].map((item, index) => (
+              {['Pizza', 'Burger', 'Pasta', 'Deals'].map((item) => (
                 <button
                   key={item}
                   type="button"
-                  className={`rounded-2xl px-4 py-3 text-left text-sm font-medium ${
-                    index === 4
-                      ? 'bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] text-white shadow-[0_12px_24px_rgba(225,29,72,0.22)]'
-                      : 'bg-[var(--color-surface)] text-[var(--color-text)] hover:bg-[rgba(249,115,22,0.08)]'
-                  }`}
+                  className="rounded-2xl bg-[var(--color-surface)] px-4 py-3 text-left text-sm font-medium text-[var(--color-text)] hover:bg-[rgba(249,115,22,0.08)]"
                 >
                   {item}
                 </button>
               ))}
+              <Link
+                href="/cart"
+                className="rounded-2xl bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] px-4 py-3 text-left text-sm font-medium text-white shadow-[0_12px_24px_rgba(225,29,72,0.22)]"
+              >
+                Cart
+              </Link>
             </nav>
           </aside>
         </div>
@@ -162,6 +233,13 @@ export default function Home() {
                   {item}
                 </button>
               ))}
+              <Link
+                href="/cart"
+                onClick={() => setIsNavOpen(false)}
+                className="w-full rounded-full border border-[var(--color-border)] bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] px-4 py-3 text-left text-sm font-medium text-white transition-colors hover:opacity-95"
+              >
+                Cart
+              </Link>
             </nav>
           </div>
         </div>
@@ -176,19 +254,21 @@ export default function Home() {
         >
           <h2 className="px-2 pb-4 text-sm font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)]">Menu</h2>
           <nav aria-label="Sidebar" className="flex flex-col gap-3">
-            {['Pizza', 'Burger', 'Pasta', 'Deals', 'Cart'].map((item, index) => (
+            {['Pizza', 'Burger', 'Pasta', 'Deals'].map((item) => (
               <button
                 key={item}
                 type="button"
-                className={`rounded-2xl px-4 py-3 text-left text-sm font-medium transition-colors ${
-                  index === 4
-                    ? 'bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] text-white shadow-[0_12px_24px_rgba(225,29,72,0.22)]'
-                    : 'bg-[var(--color-surface)] text-[var(--color-text)] hover:bg-[rgba(249,115,22,0.08)]'
-                }`}
+                className="rounded-2xl bg-[var(--color-surface)] px-4 py-3 text-left text-sm font-medium text-[var(--color-text)] hover:bg-[rgba(249,115,22,0.08)]"
               >
                 {item}
               </button>
             ))}
+            <Link
+              href="/cart"
+              className="rounded-2xl bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] px-4 py-3 text-left text-sm font-medium text-white shadow-[0_12px_24px_rgba(225,29,72,0.22)]"
+            >
+              Cart
+            </Link>
           </nav>
         </aside>
       )}
