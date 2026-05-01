@@ -3,6 +3,13 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 
+const headerNavItems = [
+  { label: "Pizza", src: "/pizza_icon.png", alt: "Pizza" },
+  { label: "Burger", src: "/burger_icon.png", alt: "Burger" },
+  { label: "Pasta", src: "/spaghetti_icon.png", alt: "Pasta" },
+  { label: "Deals", src: "/deal_icon.png", alt: "Deals" },
+] as const;
+
 export default function Home() {
   const [sidebarWidth, setSidebarWidth] = useState(288);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -77,15 +84,36 @@ export default function Home() {
         </div>
 
         <nav className="hidden sm:flex items-center gap-3">
-          {['Pizza', 'Burger', 'Pasta', 'Deals'].map((item) => (
+          <button
+            type="button"
+            className="inline-flex items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-2 text-[var(--color-support)] transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white"
+            aria-label="Shopping cart"
+          >
+            <Image src="/shopping-cart_Icon.png" alt="" width={18} height={18} className="h-[18px] w-[18px] object-contain" aria-hidden />
+          </button>
+
+          {headerNavItems.map((item) => (
             <button
-              key={item}
+              key={item.label}
               type="button"
-              className="rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1 text-sm font-medium text-[var(--color-text)] transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white"
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1 text-sm font-medium text-[var(--color-text)] transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white"
             >
-              {item}
+              <Image src={item.src} alt={item.alt} width={18} height={18} className="h-[18px] w-[18px] object-contain" />
+              {item.label}
             </button>
           ))}
+
+          <button
+            type="button"
+            className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1 text-sm font-medium text-[var(--color-text)] transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white"
+          >
+            <span className="inline-flex h-4 w-4 items-center justify-center text-[var(--color-support)]">
+              <svg width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                <path d="M10 4v12M4 10h12" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+              </svg>
+            </span>
+            Add
+          </button>
         </nav>
 
         <button className="sm:hidden inline-flex items-center justify-center rounded-md p-2 transition-colors hover:bg-[rgba(225,29,72,0.12)]" onClick={() => setIsNavOpen(true)} aria-label="Open nav menu">
