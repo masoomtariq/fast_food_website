@@ -51,11 +51,11 @@ export default function Home() {
   }, [isDesktop]);
 
   return (
-    <main className="flex min-h-screen flex-col bg-white">
-      <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between gap-4 bg-zinc-100 px-4 py-3">
+    <main className="flex min-h-screen flex-col bg-[var(--color-bg)] text-[var(--color-text)]">
+      <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between gap-4 border-b border-[var(--color-border)] bg-[linear-gradient(135deg,var(--color-surface),var(--color-surface-alt))] px-4 py-3 shadow-[0_12px_30px_rgba(15,23,42,0.08)] backdrop-blur-sm">
         <div className="flex items-center gap-3">
           <button
-            className="sm:hidden inline-flex items-center justify-center rounded-md p-2 hover:bg-black/5"
+            className="sm:hidden inline-flex items-center justify-center rounded-md p-2 transition-colors hover:bg-[rgba(225,29,72,0.12)]"
             onClick={() => setIsSidebarOpen(true)}
             aria-label="Open menu"
           >
@@ -67,13 +67,13 @@ export default function Home() {
           <Image
             src="/grabe-go-logo.png"
             alt="Grab & Go logo"
-            width={56}
-            height={56}
-            className="h-14 w-14 rounded-full object-cover"
+            width={64}
+            height={64}
+            className="h-16 w-16 rounded-full object-cover ring-4 ring-white shadow-[0_10px_25px_rgba(15,23,42,0.2)]"
             priority
           />
 
-          <span className="hidden sm:inline text-lg font-semibold tracking-tight text-black sm:text-2xl">Grab &amp; Go</span>
+          <span className="hidden sm:inline text-lg font-semibold tracking-tight text-[var(--color-primary)] sm:text-2xl">Grab &amp; Go</span>
         </div>
 
         <nav className="hidden sm:flex items-center gap-3">
@@ -81,14 +81,14 @@ export default function Home() {
             <button
               key={item}
               type="button"
-              className="rounded-full border border-black/10 bg-white px-3 py-1 text-sm font-medium text-black transition-colors hover:bg-black hover:text-white"
+              className="rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1 text-sm font-medium text-[var(--color-text)] transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white"
             >
               {item}
             </button>
           ))}
         </nav>
 
-        <button className="sm:hidden inline-flex items-center justify-center rounded-md p-2 hover:bg-black/5" onClick={() => setIsNavOpen(true)} aria-label="Open nav menu">
+        <button className="sm:hidden inline-flex items-center justify-center rounded-md p-2 transition-colors hover:bg-[rgba(225,29,72,0.12)]" onClick={() => setIsNavOpen(true)} aria-label="Open nav menu">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
             <path d="M4 6h12M4 10h12M4 14h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -98,10 +98,10 @@ export default function Home() {
       {/* Mobile sidebar drawer */}
       {!isDesktop && isSidebarOpen && (
         <div className="fixed inset-0 z-50 sm:hidden">
-          <div className="absolute inset-0 bg-black/40" onClick={() => setIsSidebarOpen(false)} />
-          <aside className="absolute left-0 top-0 h-full w-64 bg-zinc-50 p-4">
+          <div className="absolute inset-0 bg-[rgba(15,23,42,0.55)]" onClick={() => setIsSidebarOpen(false)} />
+          <aside className="absolute left-0 top-[5.5rem] h-[calc(100vh-5.5rem)] w-64 border-r border-[var(--color-border)] bg-[linear-gradient(180deg,var(--color-surface),#fff3e2)] p-4 shadow-[8px_0_30px_rgba(15,23,42,0.08)]">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold">Menu</h3>
+              <h3 className="text-sm font-semibold text-[var(--color-text)]">Menu</h3>
               <button onClick={() => setIsSidebarOpen(false)} aria-label="Close" className="p-1">✕</button>
             </div>
             <nav className="mt-4 flex flex-col gap-3">
@@ -110,7 +110,9 @@ export default function Home() {
                   key={item}
                   type="button"
                   className={`rounded-2xl px-4 py-3 text-left text-sm font-medium ${
-                    index === 4 ? 'bg-black text-white' : 'bg-zinc-50 text-black hover:bg-zinc-100'
+                    index === 4
+                      ? 'bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] text-white shadow-[0_12px_24px_rgba(225,29,72,0.22)]'
+                      : 'bg-[var(--color-surface)] text-[var(--color-text)] hover:bg-[rgba(249,115,22,0.08)]'
                   }`}
                 >
                   {item}
@@ -124,11 +126,11 @@ export default function Home() {
       {/* Mobile nav overlay */}
       {!isDesktop && isNavOpen && (
         <div className="fixed inset-0 z-50 sm:hidden">
-          <div className="absolute inset-0 bg-black/40" onClick={() => setIsNavOpen(false)} />
-          <div className="absolute top-14 left-4 right-4 bg-white rounded-lg p-4 shadow-lg">
+          <div className="absolute inset-0 bg-[rgba(15,23,42,0.55)]" onClick={() => setIsNavOpen(false)} />
+          <div className="absolute top-[5.5rem] left-4 right-4 rounded-[1.25rem] border border-[var(--color-border)] bg-[linear-gradient(180deg,var(--color-surface),#fff6eb)] p-4 shadow-[0_20px_40px_rgba(15,23,42,0.15)]">
             <nav className="flex flex-col gap-3">
               {['Pizzas', 'Burger', 'Pasta', 'Meals'].map((item) => (
-                <button key={item} onClick={() => setIsNavOpen(false)} className="w-full rounded-full border border-black/10 bg-white px-4 py-3 text-left text-sm font-medium">
+                <button key={item} onClick={() => setIsNavOpen(false)} className="w-full rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-left text-sm font-medium text-[var(--color-text)] transition-colors hover:bg-[var(--color-primary)] hover:text-white">
                   {item}
                 </button>
               ))}
@@ -141,17 +143,19 @@ export default function Home() {
       {isDesktop && (
         <aside
           ref={sidebarRef}
-          className="fixed left-0 top-14 h-[calc(100vh-3.5rem)] z-30 overflow-auto bg-zinc-50 p-4 transition-[width] duration-75 hidden sm:block"
+          className="fixed left-0 top-[5.5rem] z-30 hidden h-[calc(100vh-5.5rem)] overflow-auto border-r border-[var(--color-border)] bg-[linear-gradient(180deg,var(--color-surface),#fff4e6)] p-4 shadow-[8px_0_30px_rgba(15,23,42,0.06)] transition-[width] duration-75 sm:block"
           style={{ width: `${sidebarWidth}px` }}
         >
-          <h2 className="px-2 pb-4 text-sm font-semibold uppercase tracking-[0.2em] text-black/50">Menu</h2>
+          <h2 className="px-2 pb-4 text-sm font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)]">Menu</h2>
           <nav aria-label="Sidebar" className="flex flex-col gap-3">
             {['Pizzas', 'Burger', 'Pasta', 'Meals', 'Cart'].map((item, index) => (
               <button
                 key={item}
                 type="button"
                 className={`rounded-2xl px-4 py-3 text-left text-sm font-medium transition-colors ${
-                  index === 4 ? 'bg-black text-white' : 'bg-zinc-50 text-black hover:bg-zinc-100'
+                  index === 4
+                    ? 'bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] text-white shadow-[0_12px_24px_rgba(225,29,72,0.22)]'
+                    : 'bg-[var(--color-surface)] text-[var(--color-text)] hover:bg-[rgba(249,115,22,0.08)]'
                 }`}
               >
                 {item}
@@ -165,13 +169,13 @@ export default function Home() {
       {isDesktop && (
         <div
           onMouseDown={handleMouseDown}
-          className="fixed top-14 h-[calc(100vh-3.5rem)] z-40 w-1 cursor-col-resize bg-transparent hover:bg-black/5 hidden sm:block"
+          className="fixed top-[5.5rem] z-40 hidden h-[calc(100vh-5.5rem)] w-1 cursor-col-resize bg-transparent hover:bg-[rgba(249,115,22,0.18)] sm:block"
           style={{ userSelect: 'none', left: `${sidebarWidth}px` }}
         />
       )}
 
       <section
-        className="mt-16 flex-1 bg-white"
+        className="mt-[5.5rem] flex-1 bg-[radial-gradient(circle_at_top,rgba(250,204,21,0.08),transparent_28%),linear-gradient(180deg,var(--color-bg),#fffaf4)]"
         style={{ marginLeft: isDesktop ? `${sidebarWidth}px` : 0 }}
       >
         {['Pizzas', 'Burgers', 'Pasta', 'Meals'].map((category, index) => {
@@ -186,7 +190,7 @@ export default function Home() {
           return (
             <div key={category} className="pb-8">
               <div className="px-4 py-6 sm:px-8">
-                <h2 className="text-2xl font-semibold text-black">{category}</h2>
+                <h2 className="text-2xl font-semibold text-[var(--color-primary)]">{category}</h2>
               </div>
 
               {isGridLayout ? (
@@ -194,12 +198,12 @@ export default function Home() {
                   {mockProducts.map((product) => (
                     <article
                       key={product.id}
-                      className="rounded-lg border border-black/10 bg-zinc-50 p-4 shadow-sm hover:shadow-md transition-shadow"
+                      className="rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[0_14px_35px_rgba(15,23,42,0.08)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(15,23,42,0.12)]"
                     >
-                      <div className="mb-4 h-40 rounded-md bg-gradient-to-br from-zinc-200 to-zinc-300" />
-                      <h3 className="text-lg font-semibold text-black">{product.name}</h3>
-                      <p className="mt-2 text-sm text-black/60">{product.price}</p>
-                      <button className="mt-4 w-full rounded-lg bg-black px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-800">
+                      <div className="mb-4 h-40 rounded-[1rem] bg-[linear-gradient(135deg,#fde68a_0%,#fb923c_48%,#ef4444_100%)] shadow-inner" />
+                      <h3 className="text-lg font-semibold text-[var(--color-text)]">{product.name}</h3>
+                      <p className="mt-2 text-sm text-[var(--color-muted)]">{product.price}</p>
+                      <button className="mt-4 w-full rounded-xl bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] px-3 py-2 text-sm font-medium text-white shadow-[0_10px_20px_rgba(225,29,72,0.2)] transition-transform hover:scale-[1.01] hover:shadow-[0_14px_28px_rgba(225,29,72,0.28)]">
                         Add to Cart
                       </button>
                     </article>
@@ -208,11 +212,11 @@ export default function Home() {
               ) : (
                 <div className="px-4 sm:px-8 flex flex-col sm:flex-row sm:items-start gap-6">
                   {mockProducts.map((product) => (
-                    <article key={product.id} className="flex-1 rounded-lg border border-black/10 bg-zinc-50 p-4 shadow-sm hover:shadow-md transition-shadow">
-                      <div className="mb-4 h-40 rounded-md bg-gradient-to-br from-zinc-200 to-zinc-300" />
-                      <h3 className="text-lg font-semibold text-black">{product.name}</h3>
-                      <p className="mt-2 text-sm text-black/60">{product.price}</p>
-                      <button className="mt-4 w-full rounded-lg bg-black px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-800">
+                    <article key={product.id} className="flex-1 rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[0_14px_35px_rgba(15,23,42,0.08)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(15,23,42,0.12)]">
+                      <div className="mb-4 h-40 rounded-[1rem] bg-[linear-gradient(135deg,#fde68a_0%,#fb923c_48%,#ef4444_100%)] shadow-inner" />
+                      <h3 className="text-lg font-semibold text-[var(--color-text)]">{product.name}</h3>
+                      <p className="mt-2 text-sm text-[var(--color-muted)]">{product.price}</p>
+                      <button className="mt-4 w-full rounded-xl bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] px-3 py-2 text-sm font-medium text-white shadow-[0_10px_20px_rgba(225,29,72,0.2)] transition-transform hover:scale-[1.01] hover:shadow-[0_14px_28px_rgba(225,29,72,0.28)]">
                         Add to Cart
                       </button>
                     </article>
@@ -220,19 +224,19 @@ export default function Home() {
                 </div>
               )}
 
-              {index < 3 && <div className="mt-6 h-px bg-black/10" />}
+              {index < 3 && <div className="mt-6 h-px bg-[var(--color-border)]" />}
             </div>
           );
         })}
       </section>
 
-      <footer className="w-full bg-zinc-900 mt-auto">
+      <footer className="mt-auto w-full bg-[var(--color-footer)]">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 px-6 py-8" style={{ marginLeft: isDesktop ? `${sidebarWidth}px` : 0 }}>
           <div>
             <p className="text-sm font-medium text-white">Grab &amp; Go</p>
-            <p className="mt-2 text-sm text-zinc-400">123 Main Street, Downtown</p>
-            <p className="text-sm text-zinc-400">New York, NY 10001</p>
-            <p className="mt-1 text-sm text-zinc-400">Phone: (555) 123-4567</p>
+            <p className="mt-2 text-sm text-white/70">123 Main Street, Downtown</p>
+            <p className="text-sm text-white/70">New York, NY 10001</p>
+            <p className="mt-1 text-sm text-white/70">Phone: (555) 123-4567</p>
           </div>
 
           <nav aria-label="Social" className="flex items-center gap-4">
@@ -240,7 +244,7 @@ export default function Home() {
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center h-10 w-10 rounded-full border border-zinc-700 text-white transition-colors hover:bg-white hover:text-black"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white transition-colors hover:border-transparent hover:bg-[var(--color-accent)] hover:text-[var(--color-footer)]"
               aria-label="Facebook"
             >
               <span className="text-lg font-bold">f</span>
@@ -249,7 +253,7 @@ export default function Home() {
               href="https://youtube.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center h-10 w-10 rounded-full border border-zinc-700 text-white transition-colors hover:bg-white hover:text-black"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white transition-colors hover:border-transparent hover:bg-[var(--color-support)] hover:text-white"
               aria-label="YouTube"
             >
               <span className="text-sm font-bold">▶</span>
