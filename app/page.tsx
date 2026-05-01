@@ -77,7 +77,7 @@ export default function Home() {
         </div>
 
         <nav className="hidden sm:flex items-center gap-3">
-          {['Pizzas', 'Burger', 'Pasta', 'Meals'].map((item) => (
+          {['Pizza', 'Burger', 'Pasta', 'Deals'].map((item) => (
             <button
               key={item}
               type="button"
@@ -105,7 +105,7 @@ export default function Home() {
               <button onClick={() => setIsSidebarOpen(false)} aria-label="Close" className="p-1">✕</button>
             </div>
             <nav className="mt-4 flex flex-col gap-3">
-              {['Pizzas', 'Burger', 'Pasta', 'Meals', 'Cart'].map((item, index) => (
+              {['Pizza', 'Burger', 'Pasta', 'Deals', 'Cart'].map((item, index) => (
                 <button
                   key={item}
                   type="button"
@@ -129,7 +129,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-[rgba(15,23,42,0.55)]" onClick={() => setIsNavOpen(false)} />
           <div className="absolute top-[5.5rem] left-4 right-4 rounded-[1.25rem] border border-[var(--color-border)] bg-[linear-gradient(180deg,var(--color-surface),#fff6eb)] p-4 shadow-[0_20px_40px_rgba(15,23,42,0.15)]">
             <nav className="flex flex-col gap-3">
-              {['Pizzas', 'Burger', 'Pasta', 'Meals'].map((item) => (
+              {['Pizza', 'Burger', 'Pasta', 'Deals'].map((item) => (
                 <button key={item} onClick={() => setIsNavOpen(false)} className="w-full rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-left text-sm font-medium text-[var(--color-text)] transition-colors hover:bg-[var(--color-primary)] hover:text-white">
                   {item}
                 </button>
@@ -148,7 +148,7 @@ export default function Home() {
         >
           <h2 className="px-2 pb-4 text-sm font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)]">Menu</h2>
           <nav aria-label="Sidebar" className="flex flex-col gap-3">
-            {['Pizzas', 'Burger', 'Pasta', 'Meals', 'Cart'].map((item, index) => (
+            {['Pizza', 'Burger', 'Pasta', 'Deals', 'Cart'].map((item, index) => (
               <button
                 key={item}
                 type="button"
@@ -178,8 +178,8 @@ export default function Home() {
         className="mt-[5.5rem] flex-1 bg-[radial-gradient(circle_at_top,rgba(250,204,21,0.08),transparent_28%),linear-gradient(180deg,var(--color-bg),#fffaf4)]"
         style={{ marginLeft: isDesktop ? `${sidebarWidth}px` : 0 }}
       >
-        {['Pizzas', 'Burgers', 'Pasta', 'Meals'].map((category, index) => {
-          const isGridLayout = category === 'Pizzas' || category === 'Pasta';
+        {['Pizza', 'Burgers', 'Pasta', 'Deals'].map((category, index) => {
+          const isGridLayout = category === 'Pizza' || category === 'Pasta';
           const cardCount = isGridLayout ? 6 : 3;
           const mockProducts = Array.from({ length: cardCount }, (_, i) => ({
             id: i + 1,
