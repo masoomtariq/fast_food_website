@@ -67,9 +67,9 @@ export default function Home() {
           <Image
             src="/grabe-go-logo.png"
             alt="Grab & Go logo"
-            width={44}
-            height={44}
-            className="h-10 w-10 rounded-full object-cover"
+            width={56}
+            height={56}
+            className="h-14 w-14 rounded-full object-cover"
             priority
           />
 
