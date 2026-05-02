@@ -154,32 +154,17 @@ export default function Home() {
             </svg>
           </button>
 
-          {/* Mobile: show logo + title right after hamburger */}
-          <Link href="/" className="flex items-center gap-3 sm:hidden pointer-events-auto">
+          {/* Logo + title: shown on all sizes, left-aligned after hamburger */}
+          <Link href="/" className="flex items-center gap-3 pointer-events-auto">
             <Image
               src="/grabe-go-logo.png"
               alt="Grab & Go logo"
               width={40}
               height={40}
-              className="h-9 w-9 rounded-full object-cover ring-1 ring-white shadow-[0_6px_14px_rgba(15,23,42,0.12)]"
+              className="h-9 w-9 rounded-full object-cover ring-1 ring-white shadow-[0_6px_14px_rgba(15,23,42,0.12)] sm:h-12 sm:w-12 sm:ring-2"
               priority
             />
-            <span className="text-sm font-semibold tracking-tight text-[var(--color-primary)]">Grab &amp; Go</span>
-          </Link>
-        </div>
-
-        {/* Desktop: centered logo/title (hidden on mobile) */}
-        <div className="hidden flex-1 items-center justify-center sm:flex">
-          <Link href="/" className="flex items-center gap-3 pointer-events-auto">
-            <Image
-              src="/grabe-go-logo.png"
-              alt="Grab & Go logo"
-              width={64}
-              height={64}
-              className="h-16 w-16 rounded-full object-cover ring-2 ring-white shadow-[0_8px_18px_rgba(15,23,42,0.15)]"
-              priority
-            />
-            <span className="hidden sm:inline text-lg font-semibold tracking-tight text-[var(--color-primary)] sm:text-2xl">Grab &amp; Go</span>
+            <span className="text-sm font-semibold tracking-tight text-[var(--color-primary)] sm:text-lg">Grab &amp; Go</span>
           </Link>
         </div>
 
@@ -429,7 +414,7 @@ export default function Home() {
       >
         <div className="px-4 pb-2 pt-6 sm:px-8">
           <div className="relative overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] bg-[linear-gradient(135deg,#fff7ec,var(--color-surface))] shadow-[0_22px_46px_rgba(15,23,42,0.12)]">
-            <div className="relative h-[220px] bg-[rgba(15,23,42,0.08)] sm:h-[280px] lg:h-[340px]">
+            <div className="relative h-[260px] bg-[rgba(15,23,42,0.08)] sm:h-[340px] lg:h-[420px]">
               {heroCarouselImages.map((image, index) => {
                 const isActive = index === activeHeroSlide;
 
@@ -593,7 +578,7 @@ export default function Home() {
         })}
       </section>
 
-      <section className="py-12" style={{ marginLeft: isDesktop ? `${sidebarWidth}px` : 0 }}>
+      <section className="py-12" style={{ marginLeft: isDesktop && isSidebarOpen ? `${sidebarWidth}px` : 0 }}>
         <div className="px-4 sm:px-8">
           <div className="rounded-[1.5rem] border border-[var(--color-border)] bg-[linear-gradient(180deg,var(--color-surface),#fff5e8)] px-5 py-6 shadow-[0_16px_36px_rgba(15,23,42,0.08)] sm:px-8">
             <div className="max-w-3xl">
@@ -633,7 +618,7 @@ export default function Home() {
       </section>
 
       <footer className="mt-auto w-full bg-[var(--color-footer)]">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 px-6 py-8" style={{ marginLeft: isDesktop ? `${sidebarWidth}px` : 0 }}>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 px-6 py-8" style={{ marginLeft: isDesktop && isSidebarOpen ? `${sidebarWidth}px` : 0 }}>
           <div>
             <p className="text-sm font-medium text-white">Grab &amp; Go</p>
             <p className="mt-2 text-sm text-white/70">123 Main Street, Downtown</p>
