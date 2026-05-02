@@ -5,6 +5,7 @@ const cartItems = [
   { name: "Cheese Burger", quantity: 1, price: "$9.50", status: "Cooking" },
   { name: "Spaghetti Alfredo", quantity: 3, price: "$24.00", status: "Queued" },
   { name: "Deal Combo", quantity: 1, price: "$12.00", status: "Packed" },
+  { name: "Garlic Bread", quantity: 2, price: "$6.50", status: "Ready" },
 ] as const;
 
 export default function CartPage() {

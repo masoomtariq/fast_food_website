@@ -142,10 +142,10 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col bg-[var(--color-bg)] text-[var(--color-text)]">
-      <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between gap-4 border-b border-[var(--color-border)] bg-[linear-gradient(135deg,var(--color-surface),var(--color-surface-alt))] px-4 py-3 shadow-[0_12px_30px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+      <header className="fixed top-0 left-0 right-0 z-40 flex items-center gap-4 border-b border-[var(--color-border)] bg-[linear-gradient(135deg,var(--color-surface),var(--color-surface-alt))] px-4 py-3 shadow-[0_12px_30px_rgba(15,23,42,0.08)] backdrop-blur-sm">
         <div className="flex items-center gap-3">
           <button
-            className="sm:hidden inline-flex items-center justify-center rounded-md p-2 transition-colors hover:bg-[rgba(225,29,72,0.12)]"
+            className="inline-flex items-center justify-center rounded-md p-2 transition-colors hover:bg-[rgba(225,29,72,0.12)]"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
           >
@@ -154,16 +154,33 @@ export default function Home() {
             </svg>
           </button>
 
-          <Image
-            src="/grabe-go-logo.png"
-            alt="Grab & Go logo"
-            width={64}
-            height={64}
-            className="h-16 w-16 rounded-full object-cover ring-4 ring-white shadow-[0_10px_25px_rgba(15,23,42,0.2)]"
-            priority
-          />
+          {/* Mobile: show logo + title right after hamburger */}
+          <Link href="/" className="flex items-center gap-3 sm:hidden pointer-events-auto">
+            <Image
+              src="/grabe-go-logo.png"
+              alt="Grab & Go logo"
+              width={40}
+              height={40}
+              className="h-9 w-9 rounded-full object-cover ring-1 ring-white shadow-[0_6px_14px_rgba(15,23,42,0.12)]"
+              priority
+            />
+            <span className="text-sm font-semibold tracking-tight text-[var(--color-primary)]">Grab &amp; Go</span>
+          </Link>
+        </div>
 
-          <span className="hidden sm:inline text-lg font-semibold tracking-tight text-[var(--color-primary)] sm:text-2xl">Grab &amp; Go</span>
+        {/* Desktop: centered logo/title (hidden on mobile) */}
+        <div className="hidden flex-1 items-center justify-center sm:flex">
+          <Link href="/" className="flex items-center gap-3 pointer-events-auto">
+            <Image
+              src="/grabe-go-logo.png"
+              alt="Grab & Go logo"
+              width={64}
+              height={64}
+              className="h-16 w-16 rounded-full object-cover ring-2 ring-white shadow-[0_8px_18px_rgba(15,23,42,0.15)]"
+              priority
+            />
+            <span className="hidden sm:inline text-lg font-semibold tracking-tight text-[var(--color-primary)] sm:text-2xl">Grab &amp; Go</span>
+          </Link>
         </div>
 
         <div className="ml-auto flex items-center gap-3">
@@ -206,16 +223,38 @@ export default function Home() {
             ))}
           </nav>
 
-          <button className="sm:hidden inline-flex items-center justify-center rounded-md p-2 transition-colors hover:bg-[rgba(225,29,72,0.12)]" onClick={() => setIsNavOpen(true)} aria-label="Open nav menu">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-              <path d="M4 6h12M4 10h12M4 14h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
+          <div className="flex items-center gap-3 sm:hidden">
+            <Link
+              href="/cart"
+              className="relative inline-flex items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-2 text-[var(--color-support)] transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white"
+              aria-label="Shopping cart"
+            >
+              <Image src="/shopping-cart_Icon.png" alt="" width={18} height={18} className="h-[18px] w-[18px] object-contain" aria-hidden />
+              <span className="absolute -right-1 -top-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--color-primary)] px-1 text-[10px] font-semibold leading-none text-white">
+                5
+              </span>
+            </Link>
+
+            <button
+              type="button"
+              aria-label="Profile"
+              className="group relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border)] shadow-[0_8px_18px_rgba(225,29,72,0.25)]"
+              onClick={() => setIsProfileModalOpen(true)}
+            >
+              <Image
+                src="/Avatar_profile_image.png"
+                alt="Masoom Tariq profile"
+                width={40}
+                height={40}
+                className="h-full w-full overflow-hidden rounded-full object-cover"
+              />
+            </button>
+          </div>
 
           <button
             type="button"
             aria-label="Profile"
-            className="group relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-[var(--color-border)] shadow-[0_8px_18px_rgba(225,29,72,0.25)]"
+            className="hidden sm:inline-flex group relative h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border)] shadow-[0_8px_18px_rgba(225,29,72,0.25)]"
             onClick={() => setIsProfileModalOpen(true)}
           >
             <Image
@@ -223,7 +262,7 @@ export default function Home() {
               alt="Masoom Tariq profile"
               width={40}
               height={40}
-              className="h-full w-full object-cover"
+              className="h-full w-full overflow-hidden rounded-full object-cover"
             />
               <span className="pointer-events-none absolute left-1/2 top-full z-10 mt-3 -translate-x-1/2 opacity-0 transition duration-150 group-hover:-translate-y-1 group-hover:opacity-100">
                 <span className="relative block w-max rounded-[1.1rem] bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-[var(--color-footer)] shadow-[0_12px_28px_rgba(15,23,42,0.18)]">
@@ -348,10 +387,10 @@ export default function Home() {
       )}
 
       {/* Desktop sidebar */}
-      {isDesktop && (
+      {isDesktop && isSidebarOpen && (
         <aside
           ref={sidebarRef}
-          className="fixed left-0 top-[5.5rem] z-30 hidden h-[calc(100vh-5.5rem)] overflow-auto border-r border-[var(--color-border)] bg-[linear-gradient(180deg,var(--color-surface),#fff4e6)] p-4 shadow-[8px_0_30px_rgba(15,23,42,0.06)] transition-[width] duration-75 sm:block"
+          className="fixed left-0 top-[5.5rem] z-30 h-[calc(100vh-5.5rem)] overflow-auto border-r border-[var(--color-border)] bg-[linear-gradient(180deg,var(--color-surface),#fff4e6)] p-4 shadow-[8px_0_30px_rgba(15,23,42,0.06)] transition-[width] duration-75"
           style={{ width: `${sidebarWidth}px` }}
         >
           <h2 className="px-2 pb-4 text-sm font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)]">Menu</h2>
@@ -376,7 +415,7 @@ export default function Home() {
       )}
 
       {/* Resizer - desktop only */}
-      {isDesktop && (
+      {isDesktop && isSidebarOpen && (
         <div
           onMouseDown={handleMouseDown}
           className="fixed top-[5.5rem] z-40 hidden h-[calc(100vh-5.5rem)] w-1 cursor-col-resize bg-transparent hover:bg-[rgba(249,115,22,0.18)] sm:block"
@@ -386,7 +425,7 @@ export default function Home() {
 
       <section
         className="mt-[5.5rem] flex-1 bg-[radial-gradient(circle_at_top,rgba(250,204,21,0.08),transparent_28%),linear-gradient(180deg,var(--color-bg),#fffaf4)]"
-        style={{ marginLeft: isDesktop ? `${sidebarWidth}px` : 0 }}
+        style={{ marginLeft: isDesktop && isSidebarOpen ? `${sidebarWidth}px` : 0 }}
       >
         <div className="px-4 pb-2 pt-6 sm:px-8">
           <div className="relative overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] bg-[linear-gradient(135deg,#fff7ec,var(--color-surface))] shadow-[0_22px_46px_rgba(15,23,42,0.12)]">
