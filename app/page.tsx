@@ -105,12 +105,8 @@ const promoMessages = [
 
 export default function Home() {
   const router = useRouter();
-  const [sidebarWidth, setSidebarWidth] = useState(288);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(true);
-  const sidebarRef = useRef<HTMLDivElement>(null);
-  const isResizingRef = useRef(false);
-  const [isNavOpen, setIsNavOpen] = useState(false);
+
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
@@ -142,37 +138,7 @@ export default function Home() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  const handleMouseDown = () => {
-    if (!isDesktop) return;
-    isResizingRef.current = true;
-  };
 
-  const handleMouseUp = () => {
-    isResizingRef.current = false;
-  };
-
-  const handleMouseMove = (e: MouseEvent) => {
-    if (!isResizingRef.current || !sidebarRef.current || !isDesktop) return;
-
-    const container = sidebarRef.current.parentElement || document.body;
-    const newWidth = e.clientX - container.getBoundingClientRect().left;
-    const minWidth = 200;
-    const maxWidth = 448;
-
-    if (newWidth >= minWidth && newWidth <= maxWidth) {
-      setSidebarWidth(newWidth);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("mousemove", handleMouseMove as EventListener);
-    window.addEventListener("mouseup", handleMouseUp);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove as EventListener);
-      window.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [isDesktop]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -359,34 +325,28 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="flex min-h-screen flex-col bg-[var(--color-bg)] text-[var(--color-text)]">
-      <header className="fixed top-0 left-0 right-0 z-40 flex items-center gap-4 border-b border-[var(--color-border)] bg-[linear-gradient(135deg,var(--color-surface),var(--color-surface-alt))] px-4 py-3 shadow-[0_12px_30px_rgba(15,23,42,0.08)] backdrop-blur-sm">
-        <div className="flex items-center gap-3">
-          <button
-            className="inline-flex items-center justify-center rounded-md p-2 transition-colors hover:bg-[rgba(225,29,72,0.12)]"
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
-          >
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-              <path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
+    <div className="drawer lg:drawer-open">
+      <input id="drawer-menu" type="checkbox" className="drawer-toggle" />
+      <main className="drawer-content flex min-h-screen flex-col bg-[var(--color-bg)] text-[var(--color-text)]">
+        <nav className="navbar w-full border-b border-[var(--color-border)] bg-[linear-gradient(135deg,var(--color-surface),var(--color-surface-alt))] shadow-[0_12px_30px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+          <div className="flex items-center gap-3 flex-1">
+            <label htmlFor="drawer-menu" aria-label="open sidebar" className="btn btn-square btn-ghost lg:hidden">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="h-5 w-5"><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path><path d="M9 4v16"></path><path d="M14 10l2 2l-2 2"></path></svg>
+            </label>
+            <Link href="/" className="flex items-center gap-3 pointer-events-auto">
+              <Image
+                src="/grabe-go-logo.png"
+                alt="Grab & Go logo"
+                width={40}
+                height={40}
+                className="h-9 w-9 rounded-full object-cover ring-1 ring-white shadow-[0_6px_14px_rgba(15,23,42,0.12)] sm:h-12 sm:w-12 sm:ring-2"
+                priority
+              />
+              <span className="text-sm font-semibold tracking-tight text-[var(--color-primary)] sm:text-lg">Grab &amp; Go</span>
+            </Link>
+          </div>
 
-          {/* Logo + title: shown on all sizes, left-aligned after hamburger */}
-          <Link href="/" className="flex items-center gap-3 pointer-events-auto">
-            <Image
-              src="/grabe-go-logo.png"
-              alt="Grab & Go logo"
-              width={40}
-              height={40}
-              className="h-9 w-9 rounded-full object-cover ring-1 ring-white shadow-[0_6px_14px_rgba(15,23,42,0.12)] sm:h-12 sm:w-12 sm:ring-2"
-              priority
-            />
-            <span className="text-sm font-semibold tracking-tight text-[var(--color-primary)] sm:text-lg">Grab &amp; Go</span>
-          </Link>
-        </div>
-
-        <div className="ml-auto flex items-center gap-3">
+          <div className="flex items-center gap-3">
           <nav className="hidden sm:flex items-center gap-3">
             <button
               type="button"
@@ -511,7 +471,6 @@ export default function Home() {
             Future Booking
           </button>
         </div>
-      </header>
 
       {addingProductKey && (
         <div className="fixed inset-0 z-[70] flex items-center justify-center px-4" role="status" aria-live="polite" aria-label="Adding item to cart">
@@ -1136,100 +1095,9 @@ export default function Home() {
         </div>
       )}
 
-      {/* Mobile sidebar drawer */}
-      {!isDesktop && isSidebarOpen && (
-        <div className="fixed inset-0 z-50 sm:hidden">
-          <div className="absolute inset-0 bg-[rgba(15,23,42,0.55)] backdrop-blur-sm" onClick={() => setIsSidebarOpen(false)} />
-          <aside className="absolute left-0 top-[5.5rem] h-[calc(100vh-5.5rem)] w-64 border-r border-[var(--color-border)] bg-[linear-gradient(180deg,var(--color-surface),#fff3e2)] p-4 shadow-[8px_0_30px_rgba(15,23,42,0.08)]">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-[var(--color-text)]">Menu</h3>
-              <button onClick={() => setIsSidebarOpen(false)} aria-label="Close" className="p-1">✕</button>
-            </div>
-            <nav className="mt-4 flex flex-col gap-3">
-              {['Pizza', 'Burger', 'Pasta', 'Deals'].map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  className="rounded-2xl bg-[var(--color-surface)] px-4 py-3 text-left text-sm font-medium text-[var(--color-text)] hover:bg-[rgba(249,115,22,0.08)]"
-                >
-                  {item}
-                </button>
-              ))}
-              <Link
-                href="/cart"
-                className="rounded-2xl bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] px-4 py-3 text-left text-sm font-medium text-white shadow-[0_12px_24px_rgba(225,29,72,0.22)]"
-              >
-                Cart
-              </Link>
-            </nav>
-          </aside>
-        </div>
-      )}
 
-      {/* Mobile nav overlay */}
-      {!isDesktop && isNavOpen && (
-        <div className="fixed inset-0 z-50 sm:hidden">
-          <div className="absolute inset-0 bg-[rgba(15,23,42,0.55)] backdrop-blur-sm" onClick={() => setIsNavOpen(false)} />
-          <div className="absolute top-[5.5rem] left-4 right-4 rounded-[1.25rem] border border-[var(--color-border)] bg-[linear-gradient(180deg,var(--color-surface),#fff6eb)] p-4 shadow-[0_20px_40px_rgba(15,23,42,0.15)]">
-            <nav className="flex flex-col gap-3">
-              {['Pizza', 'Burger', 'Pasta', 'Deals'].map((item) => (
-                <button key={item} onClick={() => setIsNavOpen(false)} className="w-full rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-left text-sm font-medium text-[var(--color-text)] transition-colors hover:bg-[var(--color-primary)] hover:text-white">
-                  {item}
-                </button>
-              ))}
-              <Link
-                href="/cart"
-                onClick={() => setIsNavOpen(false)}
-                className="w-full rounded-full border border-[var(--color-border)] bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] px-4 py-3 text-left text-sm font-medium text-white transition-colors hover:opacity-95"
-              >
-                Cart
-              </Link>
-            </nav>
-          </div>
-        </div>
-      )}
 
-      {/* Desktop sidebar */}
-      {isDesktop && isSidebarOpen && (
-        <aside
-          ref={sidebarRef}
-          className="fixed left-0 top-[5.5rem] z-30 h-[calc(100vh-5.5rem)] overflow-auto border-r border-[var(--color-border)] bg-[linear-gradient(180deg,var(--color-surface),#fff4e6)] p-4 shadow-[8px_0_30px_rgba(15,23,42,0.06)] transition-[width] duration-75"
-          style={{ width: `${sidebarWidth}px` }}
-        >
-          <h2 className="px-2 pb-4 text-sm font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)]">Menu</h2>
-          <nav aria-label="Sidebar" className="flex flex-col gap-3">
-            {['Pizza', 'Burger', 'Pasta', 'Deals'].map((item) => (
-              <button
-                key={item}
-                type="button"
-                className="rounded-2xl bg-[var(--color-surface)] px-4 py-3 text-left text-sm font-medium text-[var(--color-text)] hover:bg-[rgba(249,115,22,0.08)]"
-              >
-                {item}
-              </button>
-            ))}
-            <Link
-              href="/cart"
-              className="rounded-2xl bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] px-4 py-3 text-left text-sm font-medium text-white shadow-[0_12px_24px_rgba(225,29,72,0.22)]"
-            >
-              Cart
-            </Link>
-          </nav>
-        </aside>
-      )}
-
-      {/* Resizer - desktop only */}
-      {isDesktop && isSidebarOpen && (
-        <div
-          onMouseDown={handleMouseDown}
-          className="fixed top-[5.5rem] z-40 hidden h-[calc(100vh-5.5rem)] w-1 cursor-col-resize bg-transparent hover:bg-[rgba(249,115,22,0.18)] sm:block"
-          style={{ userSelect: 'none', left: `${sidebarWidth}px` }}
-        />
-      )}
-
-      <section
-        className="mt-[5.5rem] flex-1 bg-[radial-gradient(circle_at_top,rgba(250,204,21,0.08),transparent_28%),linear-gradient(180deg,var(--color-bg),#fffaf4)]"
-        style={{ marginLeft: isDesktop && isSidebarOpen ? `${sidebarWidth}px` : 0 }}
-      >
+        <section className="flex-1 bg-[radial-gradient(circle_at_top,rgba(250,204,21,0.08),transparent_28%),linear-gradient(180deg,var(--color-bg),#fffaf4)]">
         <div className="px-4 pb-2 pt-6 sm:px-8">
           <div className="relative overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] bg-[linear-gradient(135deg,#fff7ec,var(--color-surface))] shadow-[0_22px_46px_rgba(15,23,42,0.12)]">
             <HeroCarousel images={heroCarouselImages} />
@@ -1364,12 +1232,9 @@ export default function Home() {
             </CardContent>
           </Card>
         </div>
-      </section>
+        </section>
 
-      <footer
-        className="footer footer-horizontal footer-center mt-auto border-t border-white/10 bg-[var(--color-footer)] p-10 text-white"
-        style={{ marginLeft: isDesktop && isSidebarOpen ? `${sidebarWidth}px` : 0 }}
-      >
+        <footer className="footer footer-horizontal footer-center mt-auto border-t border-[var(--color-primary-hover)] bg-[var(--color-primary)] p-10 text-white">
         <aside>
           <svg
             width="50"
@@ -1426,16 +1291,44 @@ export default function Home() {
             </a>
           </div>
         </nav>
-      </footer>
+        </footer>
 
-      <button
+        <button
         type="button"
         onClick={() => setIsHelperAssistantOpen(true)}
         className="fixed bottom-5 right-5 z-[64] inline-flex h-14 w-14 items-center justify-center rounded-full bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] text-white shadow-[0_18px_36px_rgba(225,29,72,0.3)] transition-transform hover:-translate-y-1 hover:shadow-[0_22px_44px_rgba(225,29,72,0.35)]"
         aria-label="Open helper assistant"
       >
         <span className="text-2xl font-semibold leading-none">?</span>
-      </button>
-    </main>
+        </button>
+      </main>
+
+      <div className="drawer-side border-r border-[var(--color-border)]">
+        <label htmlFor="drawer-menu" aria-label="close sidebar" className="drawer-overlay"></label>
+        <div className="flex min-h-full flex-col items-start bg-[linear-gradient(180deg,var(--color-surface),#fff4e6)]">
+          <ul className="menu w-full grow p-4">
+            {['Pizza', 'Burger', 'Pasta', 'Deals'].map((item) => (
+              <li key={item}>
+                <button className="text-sm font-medium text-[var(--color-text)] hover:bg-[rgba(249,115,22,0.08)]">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="h-5 w-5">
+                    <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
+                    <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  </svg>
+                  <span>{item}</span>
+                </button>
+              </li>
+            ))}
+            <li>
+              <Link href="/cart" className="text-sm font-medium text-[var(--color-text)] hover:bg-[rgba(249,115,22,0.08)]">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="h-5 w-5">
+                  <path d="M6 9L6 17a2 2 0 002 2h8a2 2 0 002-2L18 9M9 5a3 3 0 016 0M9 9h6"></path>
+                </svg>
+                <span>Cart</span>
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   );
 }
