@@ -567,7 +567,7 @@ export default function Home() {
 
       {isProfileModalOpen && (
         <div className="fixed inset-0 z-[60] flex items-start justify-center px-4 pt-24 sm:pt-28" role="dialog" aria-modal="true" aria-label="User profile">
-          <div className="absolute inset-0 bg-[rgba(15,23,42,0.55)]" onClick={() => setIsProfileModalOpen(false)} />
+          <div className="absolute inset-0 bg-[rgba(15,23,42,0.55)] backdrop-blur-md" onClick={() => setIsProfileModalOpen(false)} />
           <div className="relative w-full max-w-sm rounded-[1.25rem] border border-[var(--color-border)] bg-[linear-gradient(180deg,var(--color-surface),#fff6eb)] p-5 shadow-[0_24px_56px_rgba(15,23,42,0.18)]">
             <div className="flex items-start justify-between">
               <h3 className="text-lg font-semibold text-[var(--color-text)]">Profile</h3>
@@ -615,7 +615,7 @@ export default function Home() {
 
       {isOrderModalOpen && (
         <div className="fixed inset-0 z-[60] flex items-start justify-center px-4 py-6 sm:items-center sm:py-10" role="dialog" aria-modal="true" aria-label="Place order form">
-          <div className="absolute inset-0 bg-[rgba(15,23,42,0.55)]" onClick={() => setIsOrderModalOpen(false)} />
+          <div className="absolute inset-0 bg-[rgba(15,23,42,0.55)] backdrop-blur-md" onClick={() => setIsOrderModalOpen(false)} />
           <form
             onSubmit={handleOrderSubmit}
             className="relative w-full max-w-3xl max-h-[calc(100vh-3rem)] overflow-y-auto rounded-[1.5rem] border border-[var(--color-border)] bg-[linear-gradient(180deg,var(--color-surface),#fff6eb)] p-5 shadow-[0_24px_56px_rgba(15,23,42,0.18)] sm:p-6"
@@ -802,7 +802,7 @@ export default function Home() {
 
       {isRegisterModalOpen && (
         <div className="fixed inset-0 z-[60] flex items-start justify-center px-4 py-6 sm:items-center sm:py-10" role="dialog" aria-modal="true" aria-label="Register account form">
-          <div className="absolute inset-0 bg-[rgba(15,23,42,0.55)]" onClick={() => setIsRegisterModalOpen(false)} />
+          <div className="absolute inset-0 bg-[rgba(15,23,42,0.55)] backdrop-blur-md" onClick={() => setIsRegisterModalOpen(false)} />
           <form
             onSubmit={handleRegisterSubmit}
             className="relative w-full max-w-lg rounded-[1.5rem] border border-[var(--color-border)] bg-[linear-gradient(180deg,var(--color-surface),#fff6eb)] p-5 shadow-[0_24px_56px_rgba(15,23,42,0.18)] sm:p-6"
@@ -881,7 +881,7 @@ export default function Home() {
 
       {isFutureBookingModalOpen && (
         <div className="fixed inset-0 z-[60] flex items-start justify-center px-4 py-6 sm:items-center sm:py-10" role="dialog" aria-modal="true" aria-label="Future booking form">
-          <div className="absolute inset-0 bg-[rgba(15,23,42,0.55)]" onClick={() => setIsFutureBookingModalOpen(false)} />
+          <div className="absolute inset-0 bg-[rgba(15,23,42,0.55)] backdrop-blur-md" onClick={() => setIsFutureBookingModalOpen(false)} />
           <form
             onSubmit={handleFutureBookingSubmit}
             className="relative w-full max-w-3xl max-h-[calc(100vh-3rem)] overflow-y-auto rounded-[1.5rem] border border-[var(--color-border)] bg-[linear-gradient(180deg,var(--color-surface),#fff6eb)] p-5 shadow-[0_24px_56px_rgba(15,23,42,0.18)] sm:p-6"
@@ -1068,7 +1068,7 @@ export default function Home() {
 
       {isHelperAssistantOpen && (
         <div className="fixed inset-0 z-[65] flex items-end justify-end p-4 sm:p-6" role="dialog" aria-modal="true" aria-label="Helper assistant">
-          <div className="absolute inset-0 bg-[rgba(15,23,42,0.15)]" onClick={() => setIsHelperAssistantOpen(false)} />
+          <div className="absolute inset-0 bg-[rgba(15,23,42,0.15)] backdrop-blur-sm" onClick={() => setIsHelperAssistantOpen(false)} />
           <div className="relative w-full max-w-sm rounded-[1.4rem] border border-[var(--color-border)] bg-[linear-gradient(180deg,var(--color-surface),#fff7ef)] p-4 shadow-[0_24px_56px_rgba(15,23,42,0.18)] sm:p-5">
             <div className="flex items-start justify-between gap-4">
               <div>
@@ -1118,7 +1118,7 @@ export default function Home() {
       {/* Mobile sidebar drawer */}
       {!isDesktop && isSidebarOpen && (
         <div className="fixed inset-0 z-50 sm:hidden">
-          <div className="absolute inset-0 bg-[rgba(15,23,42,0.55)]" onClick={() => setIsSidebarOpen(false)} />
+          <div className="absolute inset-0 bg-[rgba(15,23,42,0.55)] backdrop-blur-sm" onClick={() => setIsSidebarOpen(false)} />
           <aside className="absolute left-0 top-[5.5rem] h-[calc(100vh-5.5rem)] w-64 border-r border-[var(--color-border)] bg-[linear-gradient(180deg,var(--color-surface),#fff3e2)] p-4 shadow-[8px_0_30px_rgba(15,23,42,0.08)]">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-semibold text-[var(--color-text)]">Menu</h3>
@@ -1148,7 +1148,7 @@ export default function Home() {
       {/* Mobile nav overlay */}
       {!isDesktop && isNavOpen && (
         <div className="fixed inset-0 z-50 sm:hidden">
-          <div className="absolute inset-0 bg-[rgba(15,23,42,0.55)]" onClick={() => setIsNavOpen(false)} />
+          <div className="absolute inset-0 bg-[rgba(15,23,42,0.55)] backdrop-blur-sm" onClick={() => setIsNavOpen(false)} />
           <div className="absolute top-[5.5rem] left-4 right-4 rounded-[1.25rem] border border-[var(--color-border)] bg-[linear-gradient(180deg,var(--color-surface),#fff6eb)] p-4 shadow-[0_20px_40px_rgba(15,23,42,0.15)]">
             <nav className="flex flex-col gap-3">
               {['Pizza', 'Burger', 'Pasta', 'Deals'].map((item) => (
