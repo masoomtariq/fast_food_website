@@ -1291,15 +1291,16 @@ export default function Home() {
             </a>
           </div>
         </nav>
+
         </footer>
 
         <button
-        type="button"
-        onClick={() => setIsHelperAssistantOpen(true)}
-        className="fixed bottom-5 right-5 z-[64] inline-flex h-14 w-14 items-center justify-center rounded-full bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] text-white shadow-[0_18px_36px_rgba(225,29,72,0.3)] transition-transform hover:-translate-y-1 hover:shadow-[0_22px_44px_rgba(225,29,72,0.35)]"
-        aria-label="Open helper assistant"
-      >
-        <span className="text-2xl font-semibold leading-none">?</span>
+          type="button"
+          onClick={() => setIsHelperAssistantOpen(true)}
+          className="fixed bottom-5 right-5 z-[64] inline-flex h-14 w-14 items-center justify-center rounded-full bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] text-white shadow-[0_18px_36px_rgba(225,29,72,0.3)] transition-transform hover:-translate-y-1 hover:shadow-[0_22px_44px_rgba(225,29,72,0.35)]"
+          aria-label="Open helper assistant"
+        >
+          <span className="text-2xl font-semibold leading-none">?</span>
         </button>
       </main>
 
