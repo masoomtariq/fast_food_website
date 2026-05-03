@@ -249,6 +249,7 @@ export default function Home() {
   const [showAddToCartAlert, setShowAddToCartAlert] = useState(false);
   const [showFormAlert, setShowFormAlert] = useState(false);
   const [formAlertMessage, setFormAlertMessage] = useState("");
+  const [formAlertType, setFormAlertType] = useState<"order" | "register" | "booking">("order");
   const [showPromo, setShowPromo] = useState(false);
   const [promoMessage, setPromoMessage] = useState("");
 
@@ -275,7 +276,8 @@ export default function Home() {
     event.preventDefault();
     setIsOrderModalOpen(false);
     // show mock confirmation
-    setFormAlertMessage("Order submitted (mock)");
+    setFormAlertType("order");
+    setFormAlertMessage("Your order has been submitted successfully!");
     setShowFormAlert(true);
     if (formAlertTimeoutRef.current !== null) {
       window.clearTimeout(formAlertTimeoutRef.current);
@@ -289,7 +291,8 @@ export default function Home() {
     event.preventDefault();
     setIsRegisterModalOpen(false);
     // show mock confirmation
-    setFormAlertMessage("Account created (mock)");
+    setFormAlertType("register");
+    setFormAlertMessage("Account created successfully! Welcome aboard.");
     setShowFormAlert(true);
     if (formAlertTimeoutRef.current !== null) {
       window.clearTimeout(formAlertTimeoutRef.current);
@@ -303,7 +306,8 @@ export default function Home() {
     event.preventDefault();
     setIsFutureBookingModalOpen(false);
     // show mock confirmation
-    setFormAlertMessage("Booking confirmed (mock)");
+    setFormAlertType("booking");
+    setFormAlertMessage("Your booking is confirmed! See you soon.");
     setShowFormAlert(true);
     if (formAlertTimeoutRef.current !== null) {
       window.clearTimeout(formAlertTimeoutRef.current);
@@ -510,17 +514,41 @@ export default function Home() {
       )}
 
       {showAddToCartAlert && (
-        <div className="fixed bottom-6 right-6 z-[80]" role="status" aria-live="polite">
-          <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 shadow-[0_8px_20px_rgba(15,23,42,0.12)] text-sm font-medium text-[var(--color-text)]">
-            Your item has been added to the cart
+        <div className="fixed bottom-6 right-6 z-[80] animate-in fade-in slide-in-from-right-4 duration-300" role="status" aria-live="polite">
+          <div className="flex items-center gap-3 rounded-xl bg-[linear-gradient(135deg,#22c55e_0%,#16a34a_100%)] px-4 py-3 shadow-[0_12px_30px_rgba(34,197,94,0.28)] text-sm font-semibold text-white border border-[rgba(255,255,255,0.2)]">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+              <path d="M16.5 5L7.5 14L3.5 10" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span>Your item has been added to the cart</span>
           </div>
         </div>
       )}
 
       {showFormAlert && (
-        <div className="fixed bottom-20 right-6 z-[80]" role="status" aria-live="polite">
-          <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 shadow-[0_8px_20px_rgba(15,23,42,0.12)] text-sm font-medium text-[var(--color-text)]">
-            {formAlertMessage}
+        <div className="fixed bottom-20 right-6 z-[80] animate-in fade-in slide-in-from-right-4 duration-300" role="status" aria-live="polite">
+          <div className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-white border border-[rgba(255,255,255,0.2)] shadow-[0_12px_30px_rgba(15,23,42,0.2)] ${
+            formAlertType === "order"
+              ? "bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))]"
+              : formAlertType === "register"
+              ? "bg-[linear-gradient(135deg,#f97316,#fbbf24)]"
+              : "bg-[linear-gradient(135deg,var(--color-support),#60a5fa)]"
+          }`}>
+            {formAlertType === "order" && (
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                <path d="M3 8h14M6 3h8a2 2 0 012 2v10a2 2 0 01-2 2H6a2 2 0 01-2-2V5a2 2 0 012-2z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            )}
+            {formAlertType === "register" && (
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                <path d="M10 10a2.5 2.5 0 100-5 2.5 2.5 0 000 5zm0 1c-2.5 0-5 1.25-5 2.5V17a1 1 0 001 1h8a1 1 0 001-1v-3.5c0-1.25-2.5-2.5-5-2.5z" fill="white" />
+              </svg>
+            )}
+            {formAlertType === "booking" && (
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                <path d="M4 6h12a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2zm0-2v-1a1 1 0 011-1h2a1 1 0 011 1v1m6-1v1m-8 5h8" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            )}
+            <span>{formAlertMessage}</span>
           </div>
         </div>
       )}
