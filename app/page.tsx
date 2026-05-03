@@ -77,11 +77,11 @@ const heroCarouselImages = [
 ] as const;
 
 const promoMessages = [
-  "Limited-time: 20% off all pizzas — use code HOT20",
-  "Buy one burger, get fries free — today only!",
-  "Free delivery on orders over Rs 499 — hurry up",
-  "Family meal deal: 3 items for Rs 999 — order now",
-  "Student special: extra 10% off with .edu email",
+  { text: "Limited-time: 20% off all pizzas — use code HOT20", gradient: "from-red-500 to-orange-500" },
+  { text: "Buy one burger, get fries free — today only!", gradient: "from-orange-500 to-amber-500" },
+  { text: "Free delivery on orders over Rs 499 — hurry up", gradient: "from-yellow-400 to-orange-400" },
+  { text: "Family meal deal: 3 items for Rs 999 — order now", gradient: "from-amber-500 to-yellow-400" },
+  { text: "Student special: extra 10% off with .edu email", gradient: "from-rose-500 to-red-500" },
 ] as const;
 
 export default function Home() {
@@ -252,6 +252,7 @@ export default function Home() {
   const [formAlertType, setFormAlertType] = useState<"order" | "register" | "booking">("order");
   const [showPromo, setShowPromo] = useState(false);
   const [promoMessage, setPromoMessage] = useState("");
+  const [promoIndex, setPromoIndex] = useState(0);
 
   const handleAddToCart = (productKey: string) => {
     if (addingProductKey) return;
@@ -326,7 +327,8 @@ export default function Home() {
 
     const tick = () => {
       const idx = Math.floor(Math.random() * promoMessages.length);
-      setPromoMessage(promoMessages[idx]);
+      setPromoIndex(idx);
+      setPromoMessage(promoMessages[idx].text);
       setShowPromo(true);
 
       if (promoTimeoutRef.current !== null) {
@@ -554,13 +556,23 @@ export default function Home() {
       )}
 
       {showPromo && (
-        <div className="fixed top-6 right-6 z-[90]" role="status" aria-live="polite">
-          <div className="flex items-center gap-3 rounded-xl border border-[var(--color-border)] bg-[linear-gradient(90deg,var(--color-primary),var(--color-secondary))] px-4 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(15,23,42,0.18)]">
+        <div className="fixed top-6 right-6 z-[90] animate-in fade-in slide-in-from-top-2 duration-300" role="status" aria-live="polite">
+          <div className={`flex items-center gap-3 rounded-xl border border-[rgba(255,255,255,0.3)] bg-gradient-to-r ${promoMessages[promoIndex].gradient} px-4 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(15,23,42,0.25)]`}>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-              <circle cx="10" cy="10" r="9" stroke="white" strokeOpacity="0.12" strokeWidth="1.5" />
+              <circle cx="10" cy="10" r="9" stroke="white" strokeOpacity="0.2" strokeWidth="1.5" />
               <path d="M6 10h8M10 6v8" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <span>{promoMessage}</span>
+            <span className="flex-1">{promoMessage}</span>
+            <button
+              type="button"
+              onClick={() => setShowPromo(false)}
+              className="inline-flex h-6 w-6 items-center justify-center rounded-full text-white opacity-80 transition-opacity hover:opacity-100"
+              aria-label="Close promotion"
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 4L4 12M4 4l8 8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
           </div>
         </div>
       )}
