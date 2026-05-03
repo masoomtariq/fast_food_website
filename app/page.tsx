@@ -4,6 +4,20 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { HeroCarousel } from "@/components/hero-carousel";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 const orderCategories = ["Pizza", "Burger", "Pasta", "Deals"] as const;
 
@@ -49,22 +63,27 @@ const monthNames = [
 
 const faqs = [
   {
+    value: "delivery",
     question: "How fast is delivery?",
     answer: "Most orders are delivered within 25 to 35 minutes depending on your location and order volume.",
   },
   {
+    value: "tracking",
     question: "Can I track my order?",
     answer: "Yes. Order tracking will be shown in the app once your cart is confirmed and checkout is completed.",
   },
   {
+    value: "payment",
     question: "What payment methods do you support?",
     answer: "For now this is mocked content, but the final version can support cash, card, and digital wallet payments.",
   },
   {
+    value: "customization",
     question: "Can I customize my food?",
     answer: "Yes, item customization can be added so users can remove ingredients or choose extra toppings.",
   },
   {
+    value: "deals",
     question: "Do you offer deals and combos?",
     answer: "Yes, the Deals section is where combo offers and discounts will be highlighted for quick ordering.",
   },
@@ -107,8 +126,6 @@ export default function Home() {
   const [isFastDelivery, setIsFastDelivery] = useState(false);
   const [bookingDate, setBookingDate] = useState("");
   const [calendarCursor, setCalendarCursor] = useState(() => new Date());
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
-  const [activeHeroSlide, setActiveHeroSlide] = useState(0);
   const [addingProductKey, setAddingProductKey] = useState<string | null>(null);
   const [isCardsLoading, setIsCardsLoading] = useState(true);
   const addToCartTimeoutRef = useRef<number | null>(null);
@@ -211,14 +228,6 @@ export default function Home() {
   const calendarMonth = calendarCursor.getMonth();
   const firstDayIndex = new Date(calendarYear, calendarMonth, 1).getDay();
   const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
-  useEffect(() => {
-    const interval = window.setInterval(() => {
-      setActiveHeroSlide((prev) => (prev + 1) % heroCarouselImages.length);
-    }, 4000);
-
-    return () => window.clearInterval(interval);
-  }, []);
-
   useEffect(() => {
     cardsLoadingTimeoutRef.current = window.setTimeout(() => {
       setIsCardsLoading(false);
@@ -1223,66 +1232,12 @@ export default function Home() {
       >
         <div className="px-4 pb-2 pt-6 sm:px-8">
           <div className="relative overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] bg-[linear-gradient(135deg,#fff7ec,var(--color-surface))] shadow-[0_22px_46px_rgba(15,23,42,0.12)]">
-            <div className="relative h-[260px] bg-[rgba(15,23,42,0.08)] sm:h-[340px] lg:h-[420px]">
-              {heroCarouselImages.map((image, index) => {
-                const isActive = index === activeHeroSlide;
+            <HeroCarousel images={heroCarouselImages} />
 
-                return (
-                  <Image
-                    key={image.src}
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    priority={index === 0}
-                    className={`object-contain transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-0"}`}
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 70vw"
-                  />
-                );
-              })}
-
-              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(15,23,42,0.6)_0%,rgba(15,23,42,0.18)_48%,rgba(15,23,42,0.08)_100%)]" />
-
-              <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/90">Chef Specials</p>
-                <h2 className="mt-2 max-w-xl text-2xl font-semibold text-white sm:text-3xl">Crave-worthy meals served hot and fast</h2>
-                <p className="mt-2 max-w-xl text-sm text-white/85">Swipe through our highlighted pizza, burger, and pasta picks in the hero carousel.</p>
-              </div>
-
-              <button
-                type="button"
-                onClick={() =>
-                  setActiveHeroSlide((prev) =>
-                    prev === 0 ? heroCarouselImages.length - 1 : prev - 1,
-                  )
-                }
-                className="absolute left-3 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-white/20 text-white backdrop-blur-sm transition-colors hover:bg-white/30"
-                aria-label="Previous slide"
-              >
-                <span aria-hidden>‹</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() =>
-                  setActiveHeroSlide((prev) => (prev + 1) % heroCarouselImages.length)
-                }
-                className="absolute right-3 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-white/20 text-white backdrop-blur-sm transition-colors hover:bg-white/30"
-                aria-label="Next slide"
-              >
-                <span aria-hidden>›</span>
-              </button>
-            </div>
-
-            <div className="flex items-center justify-center gap-2 border-t border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3">
-              {heroCarouselImages.map((image, index) => (
-                <button
-                  key={image.src}
-                  type="button"
-                  onClick={() => setActiveHeroSlide(index)}
-                  className={`h-2.5 rounded-full transition-all ${index === activeHeroSlide ? "w-8 bg-[var(--color-primary)]" : "w-2.5 bg-[var(--color-border)] hover:bg-[var(--color-secondary)]"}`}
-                  aria-label={`Go to slide ${index + 1}`}
-                />
-              ))}
+            <div className="border-t border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-4 sm:px-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-muted)]">Chef Specials</p>
+              <h2 className="mt-2 max-w-xl text-xl font-semibold text-[var(--color-text)] sm:text-2xl">Crave-worthy meals served hot and fast</h2>
+              <p className="mt-2 max-w-2xl text-sm text-[var(--color-muted)]">Swipe or use the arrows to view our highlighted pizza, burger, and pasta picks in the shadcn carousel.</p>
             </div>
           </div>
         </div>
@@ -1389,40 +1344,25 @@ export default function Home() {
 
       <section className="py-12" style={{ marginLeft: isDesktop && isSidebarOpen ? `${sidebarWidth}px` : 0 }}>
         <div className="px-4 sm:px-8">
-          <div className="rounded-[1.5rem] border border-[var(--color-border)] bg-[linear-gradient(180deg,var(--color-surface),#fff5e8)] px-5 py-6 shadow-[0_16px_36px_rgba(15,23,42,0.08)] sm:px-8">
-            <div className="max-w-3xl">
+          <Card className="mx-auto w-full max-w-4xl bg-[linear-gradient(180deg,var(--color-surface),#fff5e8)]">
+            <CardHeader>
               <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--color-muted)]">FAQs</p>
-              <h2 className="mt-2 text-2xl font-semibold text-[var(--color-primary)]">Frequently Asked Questions</h2>
-              <p className="mt-2 text-sm text-[var(--color-muted)]">Mocked answers for now. These accordion items can later be connected to real help content.</p>
-            </div>
-
-            <div className="mt-6 space-y-3">
-              {faqs.map((faq, index) => {
-                const isOpen = openFaqIndex === index;
-
-                return (
-                  <div key={faq.question} className="overflow-hidden rounded-[1.1rem] border border-[var(--color-border)] bg-[var(--color-surface)]">
-                    <button
-                      type="button"
-                      className="flex w-full items-center justify-between gap-4 px-4 py-4 text-left sm:px-5"
-                      onClick={() => setOpenFaqIndex(isOpen ? null : index)}
-                      aria-expanded={isOpen}
-                    >
-                      <span className="text-sm font-semibold text-[var(--color-text)] sm:text-base">{faq.question}</span>
-                      <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[rgba(249,115,22,0.12)] text-[var(--color-primary)] transition-transform ${isOpen ? "rotate-45" : ""}`}>
-                        +
-                      </span>
-                    </button>
-                    {isOpen && (
-                      <div className="border-t border-[var(--color-border)] px-4 py-4 text-sm text-[var(--color-muted)] sm:px-5">
-                        {faq.answer}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+              <CardTitle className="text-2xl text-[var(--color-primary)]">Frequently Asked Questions</CardTitle>
+              <CardDescription>
+                Common questions about delivery, orders, payment methods, and customization.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="px-6 pb-6 pt-0 sm:px-8">
+              <Accordion type="single" collapsible defaultValue={faqs[0].value}>
+                {faqs.map((faq) => (
+                  <AccordionItem key={faq.value} value={faq.value}>
+                    <AccordionTrigger>{faq.question}</AccordionTrigger>
+                    <AccordionContent>{faq.answer}</AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
