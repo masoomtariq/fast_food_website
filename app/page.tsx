@@ -346,17 +346,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="flex items-center gap-3">
-          <nav className="hidden sm:flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => setIsOrderModalOpen(true)}
-              className="inline-flex items-center justify-center rounded-full border border-[var(--color-border)] bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] px-4 py-2 text-sm font-semibold text-white shadow-[0_10px_20px_rgba(225,29,72,0.2)] transition-transform hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(225,29,72,0.28)]"
-              aria-haspopup="dialog"
-            >
-              Place Order
-            </button>
-
+          <div className="hidden items-center gap-3 sm:flex">
             <div className="group relative">
               <Link
                 href="/cart"
@@ -393,28 +383,33 @@ export default function Home() {
                 </span>
               </div>
             ))}
-          </nav>
 
-          <div className="flex items-center gap-3 sm:hidden">
-              <button
-                type="button"
-                onClick={() => setIsOrderModalOpen(true)}
-                className="inline-flex items-center justify-center rounded-full border border-[var(--color-border)] bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] px-3 py-2 text-xs font-semibold whitespace-nowrap text-white shadow-[0_10px_20px_rgba(225,29,72,0.2)] transition-transform hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(225,29,72,0.28)]"
-                aria-haspopup="dialog"
-              >
-                Place Order
-              </button>
-
-            <Link
-              href="/cart"
-              className="relative inline-flex items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-2 text-[var(--color-support)] transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white"
-              aria-label="Shopping cart"
+            <button
+              type="button"
+              onClick={() => setIsOrderModalOpen(true)}
+              className="inline-flex items-center justify-center rounded-full border border-[var(--color-border)] bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] px-4 py-2 text-sm font-semibold text-white shadow-[0_10px_20px_rgba(225,29,72,0.2)] transition-transform hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(225,29,72,0.28)]"
+              aria-haspopup="dialog"
             >
-              <Image src="/shopping-cart_Icon.png" alt="" width={18} height={18} className="h-[18px] w-[18px] object-contain" aria-hidden />
-              <span className="absolute -right-1 -top-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--color-primary)] px-1 text-[10px] font-semibold leading-none text-white">
-                5
-              </span>
-            </Link>
+              Place Order
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setIsFutureBookingModalOpen(true)}
+              className="inline-flex items-center justify-center rounded-full border border-[var(--color-border)] bg-[linear-gradient(135deg,var(--color-support),var(--color-accent))] px-4 py-2 text-sm font-semibold text-[var(--color-footer)] shadow-[0_10px_20px_rgba(37,99,235,0.16)] transition-transform hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(37,99,235,0.24)]"
+              aria-haspopup="dialog"
+            >
+              Future Booking
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setIsRegisterModalOpen(true)}
+              className="inline-flex items-center justify-center rounded-full border border-[var(--color-border)] bg-[linear-gradient(135deg,var(--color-secondary),var(--color-accent))] px-4 py-2 text-sm font-semibold text-[var(--color-footer)] shadow-[0_10px_20px_rgba(249,115,22,0.16)] transition-transform hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(249,115,22,0.24)]"
+              aria-haspopup="dialog"
+            >
+              Register
+            </button>
 
             <button
               type="button"
@@ -430,47 +425,65 @@ export default function Home() {
                 className="h-full w-full overflow-hidden rounded-full object-cover"
               />
             </button>
+
+            <div className="group relative">
+              <Link
+                href="/cart"
+                className="relative inline-flex items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-2 text-[var(--color-support)] transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white"
+                aria-label="Shopping cart"
+              >
+                <Image src="/shopping-cart_Icon.png" alt="" width={18} height={18} className="h-[18px] w-[18px] object-contain" aria-hidden />
+                <span className="absolute -right-1 -top-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--color-primary)] px-1 text-[10px] font-semibold leading-none text-white">
+                  5
+                </span>
+              </Link>
+              <span className="pointer-events-none absolute left-1/2 top-full z-10 mt-3 -translate-x-1/2 opacity-0 transition duration-150 group-hover:-translate-y-1 group-hover:opacity-100">
+                <span className="relative block w-max rounded-[1.1rem] bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-[var(--color-footer)] shadow-[0_12px_28px_rgba(15,23,42,0.18)]">
+                  Cart
+                  <span className="absolute left-1/2 top-full h-3 w-3 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[var(--color-accent)]" />
+                </span>
+              </span>
+            </div>
           </div>
 
-          <button
-            type="button"
-            aria-label="Profile"
-            className="hidden sm:inline-flex group relative h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border)] shadow-[0_8px_18px_rgba(225,29,72,0.25)]"
-            onClick={() => setIsProfileModalOpen(true)}
-          >
-            <Image
-              src="/Avatar_profile_image.png"
-              alt="Masoom Tariq profile"
-              width={40}
-              height={40}
-              className="h-full w-full overflow-hidden rounded-full object-cover"
-            />
-            <span className="pointer-events-none absolute left-1/2 top-full z-10 mt-3 -translate-x-1/2 opacity-0 transition duration-150 group-hover:-translate-y-1 group-hover:opacity-100">
-              <span className="relative block w-max rounded-[1.1rem] bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-[var(--color-footer)] shadow-[0_12px_28px_rgba(15,23,42,0.18)]">
-                Profile
-                <span className="absolute left-1/2 top-full h-3 w-3 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[var(--color-accent)]" />
+          <div className="flex items-center gap-3 sm:hidden">
+            <Link
+              href="/cart"
+              className="relative inline-flex items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-2 text-[var(--color-support)] transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white"
+              aria-label="Shopping cart"
+            >
+              <Image src="/shopping-cart_Icon.png" alt="" width={18} height={18} className="h-[18px] w-[18px] object-contain" aria-hidden />
+              <span className="absolute -right-1 -top-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--color-primary)] px-1 text-[10px] font-semibold leading-none text-white">
+                5
               </span>
-            </span>
-          </button>
+            </Link>
 
-          <button
-            type="button"
-            onClick={() => setIsRegisterModalOpen(true)}
-            className="hidden sm:inline-flex items-center justify-center rounded-full border border-[var(--color-border)] bg-[linear-gradient(135deg,var(--color-secondary),var(--color-accent))] px-4 py-2 text-sm font-semibold text-[var(--color-footer)] shadow-[0_10px_20px_rgba(249,115,22,0.16)] transition-transform hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(249,115,22,0.24)]"
-            aria-haspopup="dialog"
-          >
-            Register
-          </button>
+            <button
+              type="button"
+              onClick={() => setIsOrderModalOpen(true)}
+              className="inline-flex items-center justify-center rounded-full border border-[var(--color-border)] bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] px-3 py-2 text-xs font-semibold whitespace-nowrap text-white shadow-[0_10px_20px_rgba(225,29,72,0.2)] transition-transform hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(225,29,72,0.28)]"
+              aria-haspopup="dialog"
+            >
+              Place Order
+            </button>
 
-          <button
-            type="button"
-            onClick={() => setIsFutureBookingModalOpen(true)}
-            className="hidden sm:inline-flex items-center justify-center rounded-full border border-[var(--color-border)] bg-[linear-gradient(135deg,var(--color-support),var(--color-accent))] px-4 py-2 text-sm font-semibold text-[var(--color-footer)] shadow-[0_10px_20px_rgba(37,99,235,0.16)] transition-transform hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(37,99,235,0.24)]"
-            aria-haspopup="dialog"
-          >
-            Future Booking
-          </button>
-        </div>
+            <button
+              type="button"
+              aria-label="Profile"
+              className="group relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border)] shadow-[0_8px_18px_rgba(225,29,72,0.25)]"
+              onClick={() => setIsProfileModalOpen(true)}
+            >
+              <Image
+                src="/Avatar_profile_image.png"
+                alt="Masoom Tariq profile"
+                width={40}
+                height={40}
+                className="h-full w-full overflow-hidden rounded-full object-cover"
+              />
+            </button>
+
+          </div>
+        </nav>
 
       {addingProductKey && (
         <div className="fixed inset-0 z-[70] flex items-center justify-center px-4" role="status" aria-live="polite" aria-label="Adding item to cart">
@@ -1210,7 +1223,7 @@ export default function Home() {
         })}
       </section>
 
-      <section className="py-12" style={{ marginLeft: isDesktop && isSidebarOpen ? `${sidebarWidth}px` : 0 }}>
+      <section className="py-12">
         <div className="px-4 sm:px-8">
           <Card className="mx-auto w-full max-w-4xl bg-[linear-gradient(180deg,var(--color-surface),#fff5e8)]">
             <CardHeader>

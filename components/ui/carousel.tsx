@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type CarouselOptions = Parameters<typeof useEmblaCarousel>[0];
-type CarouselPlugin = Parameters<typeof useEmblaCarousel>[1][number];
+type CarouselPlugin = NonNullable<Parameters<typeof useEmblaCarousel>[1]>[number];
 
 type CarouselProps = {
   opts?: CarouselOptions;
