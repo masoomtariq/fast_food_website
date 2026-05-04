@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Grab & Go",
-  description: "A simple and intuitive food ordering app for quick and easy meals on the go.  Browse our menu, customize your order, and enjoy delicious food delivered right to your doorstep.",
+  title: "Grab & Go | Fast Food",
+  description:
+    "Grab & Go is a bright, playful fast food ordering experience inspired by the brand logo palette of red, orange, yellow, and blue.",
 };
 
 export default function RootLayout({
@@ -13,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
-      <body className="min-h-full bg-white text-black antialiased">{children}</body>
+      <body className="min-h-full bg-[var(--color-bg)] text-[var(--color-text)] antialiased">{children}</body>
     </html>
   );
 }

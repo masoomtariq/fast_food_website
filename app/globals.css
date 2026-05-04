@@ -1,7 +1,37 @@
 @import "tailwindcss";
+@plugin "daisyui";
+
+:root {
+  --color-bg: #fff7ed;
+  --color-surface: #fffdf8;
+  --color-surface-alt: #fff1db;
+  --color-text: #1f2937;
+  --color-muted: #6b7280;
+  --color-primary: #e11d48;
+  --color-primary-hover: #be123c;
+  --color-secondary: #f97316;
+  --color-accent: #facc15;
+  --color-support: #2563eb;
+  --color-footer: #0f172a;
+  --color-border: rgba(31, 41, 55, 0.12);
+}
+
+html {
+  color-scheme: light;
+}
 
 body {
   margin: 0;
-  background: #ffffff;
-  color: #000000;
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top left, rgba(250, 204, 21, 0.22), transparent 28%),
+    radial-gradient(circle at top right, rgba(249, 115, 22, 0.18), transparent 22%),
+    linear-gradient(180deg, #fffaf4 0%, var(--color-bg) 42%, #fffdf9 100%);
+  color: var(--color-text);
+  font-family: "Trebuchet MS", "Avenir Next", "Segoe UI", sans-serif;
+}
+
+::selection {
+  background: rgba(225, 29, 72, 0.2);
+  color: var(--color-text);
 }
