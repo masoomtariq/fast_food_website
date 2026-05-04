@@ -30,6 +30,13 @@ const headerNavItems = [
   { label: "Deals", src: "/deal_icon.png", alt: "Deals" },
 ] as const;
 
+const sidebarItems: Array<{ label: OrderCategory; src: string; alt: string }> = [
+  { label: "Pizza", src: "/pizza_icon.png", alt: "Pizza" },
+  { label: "Burger", src: "/burger_icon.png", alt: "Burger" },
+  { label: "Pasta", src: "/spaghetti_icon.png", alt: "Pasta" },
+  { label: "Deals", src: "/deal_icon.png", alt: "Deals" },
+];
+
 const orderFlavorOptions: Record<OrderCategory, string[]> = {
   Pizza: ["Margherita", "Pepperoni", "Veggie", "BBQ Chicken"],
   Burger: ["Classic", "Spicy", "Cheese Burst", "Smoky BBQ"],
@@ -95,6 +102,13 @@ const heroCarouselImages = [
   { src: "/pasta_carousel.jpg", alt: "Creamy pasta plate" },
 ] as const;
 
+const sectionCardImages: Record<"Pizza" | "Burgers" | "Pasta" | "Deals", string> = {
+  Pizza: "/pizza_card.jpg",
+  Burgers: "/burger_card.jpg",
+  Pasta: "/pasta_card.jpg",
+  Deals: "/Deals_card.jpg",
+};
+
 const promoMessages = [
   { text: "Limited-time: 20% off all pizzas — use code HOT20", gradient: "from-red-500 to-orange-500" },
   { text: "Buy one burger, get fries free — today only!", gradient: "from-orange-500 to-amber-500" },
@@ -106,6 +120,7 @@ const promoMessages = [
 export default function Home() {
   const router = useRouter();
   const [isDesktop, setIsDesktop] = useState(true);
+  const [sidebarWidth, setSidebarWidth] = useState(256);
 
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
@@ -130,6 +145,9 @@ export default function Home() {
   const cardsLoadingTimeoutRef = useRef<number | null>(null);
   const promoIntervalRef = useRef<number | null>(null);
   const promoTimeoutRef = useRef<number | null>(null);
+  const isResizingSidebarRef = useRef(false);
+  const sidebarStartXRef = useRef(0);
+  const sidebarStartWidthRef = useRef(256);
 
   useEffect(() => {
     const onResize = () => setIsDesktop(window.innerWidth >= 640);
@@ -137,6 +155,51 @@ export default function Home() {
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
+
+  useEffect(() => {
+    const minWidth = 224;
+    const maxWidth = 420;
+
+    const onMouseMove = (event: MouseEvent) => {
+      if (!isResizingSidebarRef.current) {
+        return;
+      }
+
+      const deltaX = event.clientX - sidebarStartXRef.current;
+      const nextWidth = Math.min(maxWidth, Math.max(minWidth, sidebarStartWidthRef.current + deltaX));
+      setSidebarWidth(nextWidth);
+    };
+
+    const onMouseUp = () => {
+      if (!isResizingSidebarRef.current) {
+        return;
+      }
+
+      isResizingSidebarRef.current = false;
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+    };
+
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+    };
+  }, []);
+
+  const handleSidebarResizeStart = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (!isDesktop) {
+      return;
+    }
+
+    isResizingSidebarRef.current = true;
+    sidebarStartXRef.current = event.clientX;
+    sidebarStartWidthRef.current = sidebarWidth;
+    document.body.style.cursor = "col-resize";
+    document.body.style.userSelect = "none";
+  };
 
 
 
@@ -326,11 +389,11 @@ export default function Home() {
 
   return (
     <div className="drawer lg:drawer-open">
-      <input id="drawer-menu" type="checkbox" className="drawer-toggle" />
+      <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
       <main className="drawer-content flex min-h-screen flex-col bg-[var(--color-bg)] text-[var(--color-text)]">
         <nav className="navbar w-full border-b border-[var(--color-border)] bg-[linear-gradient(135deg,var(--color-surface),var(--color-surface-alt))] shadow-[0_12px_30px_rgba(15,23,42,0.08)] backdrop-blur-sm">
           <div className="flex items-center gap-3 flex-1">
-            <label htmlFor="drawer-menu" aria-label="open sidebar" className="btn btn-square btn-ghost lg:hidden">
+            <label htmlFor="my-drawer-4" aria-label="open sidebar" className="btn btn-square btn-ghost">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="h-5 w-5"><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path><path d="M9 4v16"></path><path d="M14 10l2 2l-2 2"></path></svg>
             </label>
             <Link href="/" className="flex items-center gap-3 pointer-events-auto">
@@ -425,25 +488,6 @@ export default function Home() {
                 className="h-full w-full overflow-hidden rounded-full object-cover"
               />
             </button>
-
-            <div className="group relative">
-              <Link
-                href="/cart"
-                className="relative inline-flex items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-2 text-[var(--color-support)] transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white"
-                aria-label="Shopping cart"
-              >
-                <Image src="/shopping-cart_Icon.png" alt="" width={18} height={18} className="h-[18px] w-[18px] object-contain" aria-hidden />
-                <span className="absolute -right-1 -top-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--color-primary)] px-1 text-[10px] font-semibold leading-none text-white">
-                  5
-                </span>
-              </Link>
-              <span className="pointer-events-none absolute left-1/2 top-full z-10 mt-3 -translate-x-1/2 opacity-0 transition duration-150 group-hover:-translate-y-1 group-hover:opacity-100">
-                <span className="relative block w-max rounded-[1.1rem] bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-[var(--color-footer)] shadow-[0_12px_28px_rgba(15,23,42,0.18)]">
-                  Cart
-                  <span className="absolute left-1/2 top-full h-3 w-3 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[var(--color-accent)]" />
-                </span>
-              </span>
-            </div>
           </div>
 
           <div className="flex items-center gap-3 sm:hidden">
@@ -537,7 +581,7 @@ export default function Home() {
       )}
 
       {showPromo && (
-        <div className="fixed top-6 right-6 z-[90] animate-in fade-in slide-in-from-top-2 duration-300" role="status" aria-live="polite">
+        <div className="fixed top-24 right-6 z-[90] animate-in fade-in slide-in-from-top-2 duration-300" role="status" aria-live="polite">
           <div className={`flex items-center gap-3 rounded-xl border border-[rgba(255,255,255,0.3)] bg-gradient-to-r ${promoMessages[promoIndex].gradient} px-4 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(15,23,42,0.25)]`}>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
               <circle cx="10" cy="10" r="9" stroke="white" strokeOpacity="0.2" strokeWidth="1.5" />
@@ -1139,80 +1183,51 @@ export default function Home() {
               </div>
 
               {isCardsLoading ? (
-                isGridLayout ? (
-                  <div className="px-4 sm:px-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {Array.from({ length: cardCount }, (_, skeletonIndex) => (
-                      <article
-                        key={`${category}-skeleton-${skeletonIndex}`}
-                        className="animate-pulse rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[0_14px_35px_rgba(15,23,42,0.06)]"
-                      >
-                        <div className="mb-4 h-40 rounded-[1rem] bg-[rgba(15,23,42,0.08)]" />
-                        <div className="h-5 w-2/3 rounded-full bg-[rgba(15,23,42,0.08)]" />
-                        <div className="mt-3 h-4 w-1/3 rounded-full bg-[rgba(15,23,42,0.08)]" />
-                        <div className="mt-5 h-10 w-full rounded-xl bg-[rgba(249,115,22,0.16)]" />
-                      </article>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="px-4 sm:px-8 flex flex-col gap-6 sm:flex-row sm:items-start">
-                    {Array.from({ length: cardCount }, (_, skeletonIndex) => (
-                      <article
-                        key={`${category}-skeleton-${skeletonIndex}`}
-                        className="flex-1 animate-pulse rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[0_14px_35px_rgba(15,23,42,0.06)]"
-                      >
-                        <div className="mb-4 h-40 rounded-[1rem] bg-[rgba(15,23,42,0.08)]" />
-                        <div className="h-5 w-2/3 rounded-full bg-[rgba(15,23,42,0.08)]" />
-                        <div className="mt-3 h-4 w-1/3 rounded-full bg-[rgba(15,23,42,0.08)]" />
-                        <div className="mt-5 h-10 w-full rounded-xl bg-[rgba(249,115,22,0.16)]" />
-                      </article>
-                    ))}
-                  </div>
-                )
-              ) : isGridLayout ? (
-                <div className="px-4 sm:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {mockProducts.map((product) => {
-                    const productKey = `${category}-${product.id}`;
-
-                    return (
+                <div className="px-4 sm:px-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {Array.from({ length: cardCount }, (_, skeletonIndex) => (
                     <article
-                      key={product.id}
-                      className="rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[0_14px_35px_rgba(15,23,42,0.08)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(15,23,42,0.12)]"
+                      key={`${category}-skeleton-${skeletonIndex}`}
+                      className="animate-pulse rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[0_14px_35px_rgba(15,23,42,0.06)]"
                     >
-                      <div className="mb-4 h-40 rounded-[1rem] bg-[linear-gradient(135deg,#fde68a_0%,#fb923c_48%,#ef4444_100%)] shadow-inner" />
-                      <h3 className="text-lg font-semibold text-[var(--color-text)]">{product.name}</h3>
-                      <p className="mt-2 text-sm text-[var(--color-muted)]">{product.price}</p>
-                      <button
-                        type="button"
-                        onClick={() => handleAddToCart(productKey)}
-                        disabled={addingProductKey !== null}
-                        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] px-3 py-2 text-sm font-medium text-white shadow-[0_10px_20px_rgba(225,29,72,0.2)] transition-transform hover:scale-[1.01] hover:shadow-[0_14px_28px_rgba(225,29,72,0.28)] disabled:cursor-not-allowed disabled:opacity-80"
-                      >
-                        Add to Cart
-                      </button>
+                      <div className="mb-4 h-40 rounded-[1rem] bg-[rgba(15,23,42,0.08)]" />
+                      <div className="h-5 w-2/3 rounded-full bg-[rgba(15,23,42,0.08)]" />
+                      <div className="mt-3 h-4 w-1/3 rounded-full bg-[rgba(15,23,42,0.08)]" />
+                      <div className="mt-5 h-10 w-full rounded-xl bg-[rgba(249,115,22,0.16)]" />
                     </article>
-                  );
-                  })}
+                  ))}
                 </div>
               ) : (
-                <div className="px-4 sm:px-8 flex flex-col sm:flex-row sm:items-start gap-6">
+                <div className="px-4 sm:px-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {mockProducts.map((product) => {
                     const productKey = `${category}-${product.id}`;
 
                     return (
-                    <article key={product.id} className="flex-1 rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[0_14px_35px_rgba(15,23,42,0.08)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(15,23,42,0.12)]">
-                      <div className="mb-4 h-40 rounded-[1rem] bg-[linear-gradient(135deg,#fde68a_0%,#fb923c_48%,#ef4444_100%)] shadow-inner" />
-                      <h3 className="text-lg font-semibold text-[var(--color-text)]">{product.name}</h3>
-                      <p className="mt-2 text-sm text-[var(--color-muted)]">{product.price}</p>
-                      <button
-                        type="button"
-                        onClick={() => handleAddToCart(productKey)}
-                        disabled={addingProductKey !== null}
-                        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[linear-gradient(135deg,var(--color-primary),var(--color-secondary))] px-3 py-2 text-sm font-medium text-white shadow-[0_10px_20px_rgba(225,29,72,0.2)] transition-transform hover:scale-[1.01] hover:shadow-[0_14px_28px_rgba(225,29,72,0.28)] disabled:cursor-not-allowed disabled:opacity-80"
-                      >
-                        Add to Cart
-                      </button>
-                    </article>
-                  );
+                      <div key={product.id} className="card bg-base-100 shadow-sm border border-[var(--color-border)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(15,23,42,0.12)]">
+                        <figure className="px-4 pt-4">
+                          <Image
+                            src={sectionCardImages[category as keyof typeof sectionCardImages]}
+                            alt={`${category} card image`}
+                            width={640}
+                            height={400}
+                            className="h-44 w-full rounded-xl object-cover"
+                          />
+                        </figure>
+                        <div className="card-body">
+                          <h2 className="card-title text-[var(--color-text)]">{product.name}</h2>
+                          <p className="text-sm text-[var(--color-muted)]">{product.price}</p>
+                          <div className="card-actions justify-end">
+                            <button
+                              type="button"
+                              onClick={() => handleAddToCart(productKey)}
+                              disabled={addingProductKey !== null}
+                              className="btn btn-primary disabled:cursor-not-allowed disabled:opacity-80"
+                            >
+                              Add to Cart
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
                   })}
                 </div>
               )}
@@ -1317,30 +1332,39 @@ export default function Home() {
         </button>
       </main>
 
-      <div className="drawer-side border-r border-[var(--color-border)]">
-        <label htmlFor="drawer-menu" aria-label="close sidebar" className="drawer-overlay"></label>
-        <div className="flex min-h-full flex-col items-start bg-[linear-gradient(180deg,var(--color-surface),#fff4e6)]">
-          <ul className="menu w-full grow p-4">
-            {['Pizza', 'Burger', 'Pasta', 'Deals'].map((item) => (
-              <li key={item}>
-                <button className="text-sm font-medium text-[var(--color-text)] hover:bg-[rgba(249,115,22,0.08)]">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="h-5 w-5">
-                    <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
-                    <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                  </svg>
-                  <span>{item}</span>
+      <div className="drawer-side is-drawer-close:overflow-visible border-r border-[var(--color-border)]">
+        <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
+        <div
+          className="relative flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-[var(--sidebar-width)]"
+          style={{ ["--sidebar-width" as string]: `${sidebarWidth}px` }}
+        >
+          <ul className="menu w-full grow">
+            {sidebarItems.map((item) => (
+              <li key={item.label}>
+                <button
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right text-sm font-medium text-[var(--color-text)] hover:bg-[rgba(249,115,22,0.08)]"
+                  data-tip={item.label}
+                  onClick={() => setSelectedCategory(item.label)}
+                >
+                  <Image src={item.src} alt={item.alt} width={16} height={16} className="my-1.5 inline-block size-4 object-contain" />
+                  <span className="is-drawer-close:hidden">{item.label}</span>
                 </button>
               </li>
             ))}
             <li>
-              <Link href="/cart" className="text-sm font-medium text-[var(--color-text)] hover:bg-[rgba(249,115,22,0.08)]">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="h-5 w-5">
-                  <path d="M6 9L6 17a2 2 0 002 2h8a2 2 0 002-2L18 9M9 5a3 3 0 016 0M9 9h6"></path>
-                </svg>
-                <span>Cart</span>
+              <Link href="/cart" className="is-drawer-close:tooltip is-drawer-close:tooltip-right text-sm font-medium text-[var(--color-text)] hover:bg-[rgba(249,115,22,0.08)]" data-tip="Cart">
+                <Image src="/shopping-cart_Icon.png" alt="Cart" width={16} height={16} className="my-1.5 inline-block size-4 object-contain" />
+                <span className="is-drawer-close:hidden">Cart</span>
               </Link>
             </li>
           </ul>
+
+          <button
+            type="button"
+            aria-label="Resize sidebar"
+            onMouseDown={handleSidebarResizeStart}
+            className="is-drawer-close:hidden absolute right-0 top-0 hidden h-full w-1 cursor-col-resize bg-transparent transition-colors hover:bg-[var(--color-primary)]/40 lg:block"
+          />
         </div>
       </div>
     </div>
