@@ -390,8 +390,8 @@ export default function Home() {
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-      <main className="drawer-content flex min-h-screen flex-col bg-[var(--color-bg)] text-[var(--color-text)]">
-        <nav className="navbar w-full border-b border-[var(--color-border)] bg-[linear-gradient(135deg,var(--color-surface),var(--color-surface-alt))] shadow-[0_12px_30px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+      <main className="drawer-content flex min-h-screen flex-col bg-[var(--color-bg)] text-[var(--color-text)] pt-16">
+        <nav className="navbar fixed top-0 left-0 right-0 z-50 w-full h-16 border-b border-[var(--color-border)] bg-[var(--color-accent)] shadow-[0_12px_30px_rgba(15,23,42,0.08)] backdrop-blur-sm">
           <div className="flex items-center gap-3 flex-1">
             <label htmlFor="my-drawer-4" aria-label="open sidebar" className="btn btn-square btn-ghost">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="h-5 w-5"><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path><path d="M9 4v16"></path><path d="M14 10l2 2l-2 2"></path></svg>
@@ -1332,7 +1332,7 @@ export default function Home() {
         </button>
       </main>
 
-      <div className="drawer-side is-drawer-close:overflow-visible border-r border-[var(--color-border)]">
+      <div className="drawer-side is-drawer-close:overflow-visible border-r border-[var(--color-border)]" style={{ top: '4rem', height: 'calc(100vh - 4rem)' }}>
         <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
         <div
           className="relative flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-[var(--sidebar-width)]"
